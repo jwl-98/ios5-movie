@@ -6,10 +6,22 @@
 //
 
 import UIKit
+import SnapKit
 
 class DummyViewController: UIViewController, UICollectionViewDelegate {
     private let manager = DummyMovieDataManager()
     private var dataArray: [DummyMovie] = []
+    
+    
+    
+    private var searchButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("검색", for: .normal)
+        button.backgroundColor = .red
+        button.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        
+        return button
+    }()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,6 +38,11 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
         collectionView.register(DummyCollectionViewCell.self, forCellWithReuseIdentifier: "DummyCollectionViewCell")
         return collectionView
     }()
+    @objc
+    private func searchButtonTapped() {
+        print(#function)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +53,18 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupUI() {
-        view.addSubview(collectionView)
+        [
+            collectionView,
+            searchButton
+        ].forEach {view.addSubview($0)}
+        
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        searchButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(30)
+            $0.trailing.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().inset(20)
         }
     }
     
