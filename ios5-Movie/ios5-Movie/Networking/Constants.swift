@@ -28,7 +28,7 @@ public enum MovieAPI {
 
 /// 이미지 URL
 struct MovieImage {
-    static let imageBaseURL = "https://image.tmdb.org/t/p"
+    static let imageBaseURL = "https://image.tmdb.org/t/p/"
     static func movieImageURL(size: Int, posterPath: String) -> String {
         return "\(imageBaseURL)w\(size)\(posterPath)"
     }

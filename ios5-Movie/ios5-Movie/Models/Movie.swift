@@ -8,7 +8,7 @@
 import Foundation
 // MARK: - MovieData Model
 struct MovieData: Codable {
-    let resultCount: Int
+    let page: Int
     let results: [Movie]
 }
 
