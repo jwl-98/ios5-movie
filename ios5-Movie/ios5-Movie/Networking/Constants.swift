@@ -11,18 +11,18 @@ import Foundation
 // MARK: - API Constants
 
 public enum MovieAPI {
-    static let baseURL = "https://api.themoviedb.org/3/movie"
+    static let baseURL = "https://api.themoviedb.org/3/"
     static let apiKey = "1a7f4bd945e56750ef4ce701f48834dc"
     
     static let urlQueryItems: [URLQueryItem] = [
         URLQueryItem(name: "api_key", value: apiKey),
-        URLQueryItem(name: "language", value: "ko-KR"),
-        URLQueryItem(name: "page", value: "1")
+        URLQueryItem(name: "language", value: "ko-KR")
     ]
-    
     enum Path: String {
-        case nowPlaying = "/now_playing"
-        case upcoming = "/upcoming"
+        case nowPlaying = "movie/now_playing"
+        case upcoming = "movie/upcoming"
+        case popular = "movie/popular"
+        case search = "search/movie"
     }
 }
 
@@ -34,17 +34,17 @@ struct MovieImage {
     }
 }
 /*
- // 사용예시
- if let posterPath = movie.posterPath {
- let imageURL = Images.movieImageURL(size: 500, posterPath: posterPath)
- if let url = URL(string: imageURL) {
- DispatchQueue.global().async {
- if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
- DispatchQueue.main.async {
- cell.imageView.image = image
- }
- }
- }
- }
- }
- */
+// 사용예시
+if let posterPath = movie.posterPath {
+    let imageURL = Images.movieImageURL(size: 500, posterPath: posterPath)
+    if let url = URL(string: imageURL) {
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    cell.imageView.image = image
+                }
+            }
+        }
+    }
+}
+*/

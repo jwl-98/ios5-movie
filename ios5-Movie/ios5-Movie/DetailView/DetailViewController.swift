@@ -26,6 +26,7 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         dataManager.makeMovieData()
         setupDatas()
+        setupButton()
     }
 
     private func setupDatas() {
@@ -33,5 +34,13 @@ final class DetailViewController: UIViewController {
         movie = dataManager.getDummyMovieData()
         detailView.detailImageView.image = movie[0].movieImage
         detailView.movieNameLable.text = movie[0].movieName
+    }
+    
+    private func setupButton() {
+        detailView.reservationButton.addTarget(self, action: #selector(reservationButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func reservationButtonTapped() {
+       // modal띄우기
     }
 }
