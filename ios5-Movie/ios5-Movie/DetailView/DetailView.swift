@@ -2,7 +2,7 @@
 //  DetailView.swift
 //  ios5-Movie
 //
-//  Created by t2023-m0033 on 12/16/24.
+//  Created by Watson22_YJ on 12/16/24.
 //
 
 import UIKit
