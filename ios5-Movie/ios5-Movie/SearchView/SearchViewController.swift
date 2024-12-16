@@ -18,11 +18,12 @@ class SearchViewController: UIViewController {
     private func setupNavBar() {
         let vc = ViewController()
         let searchController = UISearchController(searchResultsController: vc)
+        searchController.searchBar.placeholder = "영화 이름 검색"
         self.title = "영화 검색"
         //네비게이션 바 타이틀 크기를 크게
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
-        searchController.searchBar.placeholder = "영화 이름 검색"
+       
     }
     
     @objc
@@ -30,9 +31,4 @@ class SearchViewController: UIViewController {
         print(#function)
     }
 
-}
-
-@available(iOS 17.0, *)
-#Preview {
-    TestVcViewController()
 }
