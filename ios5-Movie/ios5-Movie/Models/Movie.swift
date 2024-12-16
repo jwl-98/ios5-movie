@@ -6,23 +6,27 @@
 //
 
 import Foundation
-    // MARK: - MovieData Model
-
+// MARK: - MovieData Model
 struct MovieData: Codable {
     let resultCount: Int
     let results: [Movie]
 }
 
-// MARK: - Result
+// MARK: - Results
 struct Movie: Codable {
-    let overview, posterPath, releaseDate, title: String?
+    let title, enTitle, overview, posterPath, releaseDate: String?
     let voteAverage: Double?
     
     enum CodingKeys: String, CodingKey {
+        case title
+        case enTitle = "original_title"
         case overview
         case posterPath = "poster_path"
         case releaseDate = "release_date"
-        case title
         case voteAverage = "vote_average"
     }
 }
+/* Double 반올림하여 스트링 전환방법
+ let voteAverage = movie.voteAverage
+ String(format: "%.2f", voteAverage)
+ */
