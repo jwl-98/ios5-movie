@@ -4,7 +4,6 @@
 //
 // Created by 진욱의 Macintosh on 12/13/24.
 //
-
 import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
  var window: UIWindow?
