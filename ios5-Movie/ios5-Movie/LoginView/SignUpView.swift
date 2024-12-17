@@ -94,6 +94,7 @@ class SignUpView: UIViewController {
         textField.placeholder = placeholder
         textField.borderStyle = .none
         textField.font = .systemFont(ofSize: 16)
+        textField.autocapitalizationType = .none
         textField.isSecureTextEntry = isSecure
         
         // 밑줄 추가
