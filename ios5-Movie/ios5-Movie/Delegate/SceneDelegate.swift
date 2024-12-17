@@ -15,8 +15,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = ViewController()
+        window.rootViewController = UINavigationController(rootViewController: LoginView())
+        //window.rootViewController = LoginView()
         window.makeKeyAndVisible()
+        
+//        // 로그인 상태 확인
+//        if UserDefaultsManager.shared.isLoggedIn {
+//            // 이미 로그인된 상태면 메인 화면으로
+//            let mainVC = ViewController()
+//            window.rootViewController = UINavigationController(rootViewController: mainVC)
+//        } else {
+//            // 로그인이 필요한 상태면 로그인 화면으로
+//            let loginVC = LoginView()
+//            window.rootViewController = UINavigationController(rootViewController: loginVC)
+//        }
+        
         self.window = window
     }
     

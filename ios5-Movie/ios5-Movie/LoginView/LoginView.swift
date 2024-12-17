@@ -28,6 +28,9 @@ class LoginView: UIViewController {
     /// 회원가입 버튼
     private let signUpButton = UIButton()
     
+    /// userDefaults 기능 추가
+    private let userDefaults = UserDefaultsManager.shared
+    
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +77,8 @@ class LoginView: UIViewController {
         loginButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         loginButton.backgroundColor = .systemBlue
         loginButton.layer.cornerRadius = 12
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+
         
         // 회원가입 버튼 설정
         let attributedString = NSMutableAttributedString(
@@ -143,7 +148,39 @@ class LoginView: UIViewController {
         let signUpVC = SignUpView()
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
+    
+    @objc private func loginButtonTapped() {
+        guard let email = emailTextField.text, !email.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            let alert = UIAlertController(title: "에러",
+                                        message: "이메일과 비밀번호를 입력해주세요.",
+                                        preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        // UserDefaults에서 저장된 값 확인
+        let savedEmail = UserDefaults.standard.string(forKey: "userEmail")
+        let savedPassword = UserDefaults.standard.string(forKey: "userPassword")
+        
+        if email == savedEmail && password == savedPassword {
+            userDefaults.saveUserCredentials(email: email, password: password)
+            
+            // 로그인 성공 시 메인 화면으로 이동
+            let mainVC = ViewController()
+            navigationController?.setViewControllers([mainVC], animated: true)
+        } else {
+            let alert = UIAlertController(title: "로그인 실패",
+                                        message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+                                        preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+        }
+    }
 }
+
+
 
 // MARK: - SwiftUI Preview
 @available(iOS 17.0, *)

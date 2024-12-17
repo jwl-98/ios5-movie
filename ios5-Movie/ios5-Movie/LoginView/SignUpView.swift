@@ -31,6 +31,8 @@ class SignUpView: UIViewController {
     /// 계정 생성 버튼
     private let createAccountButton = UIButton()
     
+    private let userDefaults = UserDefaultsManager.shared
+    
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +80,7 @@ class SignUpView: UIViewController {
         createAccountButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         createAccountButton.backgroundColor = .systemBlue
         createAccountButton.layer.cornerRadius = 12
-        createAccountButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        createAccountButton.addTarget(self, action: #selector(createAccountButtonTapped), for: .touchUpInside)
         
         // 뷰에 컴포넌트 추가
         [backButton, titleLabel, fullNameTextField, emailTextField,
@@ -146,6 +148,32 @@ class SignUpView: UIViewController {
     @objc private func backButtonTapped() {
         let signUpVC = LoginView()
         self.navigationController?.pushViewController(signUpVC, animated: true)
+    }
+    
+    @objc private func createAccountButtonTapped() {
+        guard let fullName = fullNameTextField.text, !fullName.isEmpty,
+              let email = emailTextField.text, !email.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            // 알림창 표시
+            let alert = UIAlertController(title: "에러",
+                                        message: "모든 필드를 입력해주세요.",
+                                        preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        // UserDefaults에 저장
+        userDefaults.saveUserCredentials(email: email, password: password)
+        
+        // 성공 알림 후 로그인 화면으로 이동
+        let alert = UIAlertController(title: "성공",
+                                    message: "회원가입이 완료되었습니다.",
+                                    preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        })
+        present(alert, animated: true)
     }
 }
 
