@@ -12,7 +12,14 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
     private let manager = DummyMovieDataManager()
     private var dataArray: [DummyMovie] = []
     
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        setupCollectionView()
+        manager.makeMovieData()
+        dataArray = manager.getDummyMovieData()
+        navigationController?.navigationBar.isHidden = true
+    }
     
     private var searchButton: UIButton = {
         let button = UIButton()
@@ -38,20 +45,15 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
         collectionView.register(DummyCollectionViewCell.self, forCellWithReuseIdentifier: "DummyCollectionViewCell")
         return collectionView
     }()
+    var searchButtonAction: (() -> Void)?
     @objc
     private func searchButtonTapped() {
         print(#function)
+        searchButtonAction?()
     }
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        setupCollectionView()
-        manager.makeMovieData()
-        dataArray = manager.getDummyMovieData()
-    }
-    
+   
     private func setupUI() {
         [
             collectionView,
@@ -92,5 +94,5 @@ extension DummyViewController: UICollectionViewDataSource {
 
 @available(iOS 17.0, *)
 #Preview {
-    DummyViewController()
+    TestVcViewController()
 }
