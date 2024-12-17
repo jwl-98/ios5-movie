@@ -34,17 +34,23 @@ struct MovieImage {
     }
 }
 /*
-// 사용예시
-if let posterPath = movie.posterPath {
-    let imageURL = Images.movieImageURL(size: 500, posterPath: posterPath)
-    if let url = URL(string: imageURL) {
+ // 사용예시, 셀에서 사용 사이즈 최소 200~500
+ // prepareForeReuse ⭐️, 이미지 URL 을 받을 변수 생성 (didSet)
+ 
+private func loadImage() {
+    if let posterPath = movie.posterPath {
+        let imageURL = MovieImage.movieImageURL(size: 500, posterPath: posterPath)
+        guard let urlString = self.imageURL, let url = URL(string: imageURL) else { return }
+        
         DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    cell.imageView.image = image
-                }
+            guard let data = try? Data(contentsOf: url) else { return }
+            
+            guard urlString == url.absoluteString else { return }
+            
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: data)
             }
         }
     }
-}
-*/
+ */
+ 
