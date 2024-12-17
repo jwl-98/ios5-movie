@@ -62,6 +62,7 @@ class LoginView: UIViewController {
         emailTextField.placeholder = "Email"
         emailTextField.borderStyle = .none
         emailTextField.font = .systemFont(ofSize: 16)
+        emailTextField.autocapitalizationType = .none
         setupUnderline(for: emailTextField)
         
         // 비밀번호 입력필드 설정
@@ -69,6 +70,7 @@ class LoginView: UIViewController {
         passwordTextField.borderStyle = .none
         passwordTextField.font = .systemFont(ofSize: 16)
         passwordTextField.isSecureTextEntry = true
+        passwordTextField.autocapitalizationType = .none
         setupUnderline(for: passwordTextField)
         
         // 로그인 버튼 설정
