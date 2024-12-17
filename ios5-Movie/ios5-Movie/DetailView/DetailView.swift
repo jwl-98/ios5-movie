@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 // MARK: - DetailView UI
 
 final class DetailView: UIView {
@@ -115,26 +114,5 @@ final class DetailView: UIView {
             make.centerX.equalToSuperview()
             make.width.equalTo(90)
         }
-    }
-}
-
-// MARK: - SwiftUI Preview Extension
-extension DetailViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        func makeUIViewController(context: Context) -> UIViewController {
-            return DetailViewController()
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-    }
-    
-    func toPreview() -> some View {
-        Preview()
-    }
-}
-
-struct DetailViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailViewController().toPreview()
     }
 }

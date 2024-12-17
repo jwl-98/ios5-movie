@@ -41,6 +41,8 @@ final class DetailViewController: UIViewController {
     }
     
     @objc func reservationButtonTapped() {
-       // modal띄우기
+       // let VC = ViewController()
+       // VC.modalPresentationStyle = .fullScreen
+       // self.present(VC, animated: true, completion: nil)
     }
 }
