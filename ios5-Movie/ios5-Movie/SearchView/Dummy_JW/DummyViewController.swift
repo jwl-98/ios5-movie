@@ -11,6 +11,7 @@ import SnapKit
 class DummyViewController: UIViewController, UICollectionViewDelegate {
     private let manager = DummyMovieDataManager()
     private var dataArray: [DummyMovie] = []
+    var searchButtonAction: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,14 +46,13 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
         collectionView.register(DummyCollectionViewCell.self, forCellWithReuseIdentifier: "DummyCollectionViewCell")
         return collectionView
     }()
-    var searchButtonAction: (() -> Void)?
+    
+    //검색버튼 동작
     @objc
     private func searchButtonTapped() {
         print(#function)
         searchButtonAction?()
     }
-    
-    
    
     private func setupUI() {
         [
@@ -75,6 +75,7 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
         collectionView.delegate = self
     }
 }
+
 
 extension DummyViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
