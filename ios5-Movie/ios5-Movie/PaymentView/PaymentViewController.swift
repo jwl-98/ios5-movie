@@ -101,7 +101,7 @@ class PaymentViewController: UIViewController {
     }
     
     private func setupDatePicker() {
-        datePicker.datePickerMode = .date
+        datePicker.datePickerMode = .dateAndTime // 날짜와 시간 모두 선택
         datePicker.preferredDatePickerStyle = .compact
     }
     
@@ -169,7 +169,7 @@ class PaymentViewController: UIViewController {
     // 날짜가 선택될 시에 옆에 날짜에 표시가 되게끔
     @objc private func datePickerChanged() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm" // 날짜와 시간 형식 추가
         bookingDate = formatter.string(from: datePicker.date)
         dateLabel.text = "날짜: \(bookingDate ?? "")"
     }
