@@ -1,8 +1,6 @@
 //
-//  Movie.swift
-//  ios5-Movie
-//
-//  Created by Watson22_YJ on 12/16/24.
+// Movie.swift
+// ios5-Movie
 //
 
 import Foundation

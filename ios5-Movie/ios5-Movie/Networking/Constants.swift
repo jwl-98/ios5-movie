@@ -23,6 +23,7 @@ public enum MovieAPI {
         case upcoming = "movie/upcoming"
         case popular = "movie/popular"
         case search = "search/movie"
+        case topRated = "movie/top_rated" // 추가된 부분
     }
 }
 
