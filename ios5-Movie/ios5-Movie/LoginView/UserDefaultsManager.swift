@@ -17,6 +17,7 @@ class UserDefaultsManager {
         static let isLoggedIn = "isLoggedIn"
         static let userEmail = "userEmail"
         static let userPassword = "userPassword"  // 실제 앱에서는 암호를 UserDefaults에 저장하면 안됨
+        static let userName = "userName"
     }
     
     // 로그인 상태 저장
@@ -29,17 +30,16 @@ class UserDefaultsManager {
         }
     }
     
-    // 사용자 이메일 저장
-    func saveUserCredentials(email: String, password: String) {
+    // 사용자 정보 저장
+    func saveUserCredentials(email: String, password: String, name: String = "") {
         defaults.set(email, forKey: Keys.userEmail)
         defaults.set(password, forKey: Keys.userPassword)
+        defaults.set(name, forKey: Keys.userName)
         isLoggedIn = true
     }
     
     // 로그아웃
     func logout() {
         isLoggedIn = false
-        defaults.removeObject(forKey: Keys.userEmail)
-        defaults.removeObject(forKey: Keys.userPassword)
     }
 }

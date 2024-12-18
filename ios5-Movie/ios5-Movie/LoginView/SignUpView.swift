@@ -164,8 +164,8 @@ class SignUpView: UIViewController {
             return
         }
         
-        // UserDefaults에 저장
-        userDefaults.saveUserCredentials(email: email, password: password)
+        // UserDefaults에 이름을 포함하여 저장
+        userDefaults.saveUserCredentials(email: email, password: password, name: fullName)  // 이름 추가
         
         // 성공 알림 후 로그인 화면으로 이동
         let alert = UIAlertController(title: "성공",
