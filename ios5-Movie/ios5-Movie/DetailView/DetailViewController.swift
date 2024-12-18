@@ -10,13 +10,7 @@ import UIKit
 
 final class DetailViewController: UIViewController {
     
-    private let detailView = DetailView()
-    
-    private let dataManager = DummyMovieDataManager()
-    
-    private var movie: [DummyMovie] = []
-    
-    private let networkManager = NetworkManager.shared
+    let detailView = DetailView()
     
     override func loadView() {
         self.view = detailView
@@ -24,25 +18,21 @@ final class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataManager.makeMovieData()
-        setupDatas()
         setupButton()
     }
 
     private func setupDatas() {
         // 셀 선택된 데이터 넘기기
-        movie = dataManager.getDummyMovieData()
-        detailView.detailImageView.image = movie[0].movieImage
-        detailView.movieNameLable.text = movie[0].movieName
     }
     
     private func setupButton() {
         detailView.reservationButton.addTarget(self, action: #selector(reservationButtonTapped), for: .touchUpInside)
     }
-    
+    /// 영화 정보 넘기기
     @objc func reservationButtonTapped() {
-       // let VC = ViewController()
-       // VC.modalPresentationStyle = .fullScreen
+        let VC = PaymentViewController()
+       // VC.movieNameValueLabel.text = detailView.movieNameLable.text
+        
        // self.present(VC, animated: true, completion: nil)
     }
 }
