@@ -6,11 +6,19 @@
 //
 
 import UIKit
-    // MARK: - DetailView Controller
+// MARK: - DetailView Controller
 
 final class DetailViewController: UIViewController {
     
     let detailView = DetailView()
+    
+    private var movie: Movie?
+    
+    var imageUrl: String? {
+        didSet {
+            
+        }
+    }
     
     override func loadView() {
         self.view = detailView
@@ -20,19 +28,45 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         setupButton()
     }
-
-    private func setupDatas() {
-        // 셀 선택된 데이터 넘기기
+    
+    func configure(with movie: Movie) {
+        detailView.movieNameLable.text = movie.title
+        detailView.releaseDateLable.text = "출시일: \(movie.releaseDate ?? "N/A")"
+        detailView.voteAverageLable.text = "평점: \(movie.voteAverage ?? 0.0)"
+        detailView.movieDescriptionLable.text = movie.overview
+        if let posterPath = movie.posterPath {
+            let imageUrl = "https://image.tmdb.org/t/p/w500\(posterPath)"
+            loadImage(from: imageUrl) { image in
+                DispatchQueue.main.async {
+                    self.detailView.detailImageView.image = image
+                }
+            }
+        }
     }
+    
+    private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+          guard let url = URL(string: urlString) else {
+              completion(nil)
+              return
+          }
+          DispatchQueue.global().async {
+              guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
+                  completion(nil)
+                  return
+              }
+              completion(image)
+          }
+      }
+    
     
     private func setupButton() {
         detailView.reservationButton.addTarget(self, action: #selector(reservationButtonTapped), for: .touchUpInside)
     }
     /// 영화 정보 넘기기
-    @objc func reservationButtonTapped() {
-        let VC = PaymentViewController()
-       // VC.movieNameValueLabel.text = detailView.movieNameLable.text
-        
-       // self.present(VC, animated: true, completion: nil)
+    @objc private func reservationButtonTapped() {
+        guard let title = movie?.title else { return } // 영화 데이터가 있는지 확인
+        let paymentVC = PaymentViewController()
+        paymentVC.movieNameValueLabel.text = title // 영화 제목 전달
+        navigationController?.pushViewController(paymentVC, animated: true)
     }
 }

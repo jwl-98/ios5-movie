@@ -11,9 +11,9 @@ class MovieListViewController: UIViewController {
     // MARK: - Properties
     private var nowPlayingMovies: [Movie] = []
     private var upcomingMovies: [Movie] = []
-    private var topRatedMovies: [Movie] = []
-    private var trendingMovies: [Movie] = []
-    private let sectionTitles = ["Top Rated", "Now Playing", "Upcoming", "Trending"]
+    private var popularMovies: [Movie] = []
+    
+    private let sectionTitles = ["Now Playing", "Upcoming", "Popular"]
     
     private let segmentedControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["현재상영영화", "영화 검색", "마이페이지"])
@@ -41,6 +41,8 @@ class MovieListViewController: UIViewController {
         setupUI()
         setupCollectionView()
         fetchNowPlayingMovies()
+        fetchUpcomingMovies()
+        fetchPopularMovies()
     }
     
     // MARK: - Setup UI
@@ -71,6 +73,7 @@ class MovieListViewController: UIViewController {
     
     private func setupCollectionView() {
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.identifier)
         collectionView.register(SectionHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -93,15 +96,47 @@ class MovieListViewController: UIViewController {
         }
     }
     
+    // MARK: - Fetch Movies
+    private func fetchUpcomingMovies() {
+        NetworkManager.shared.fetchDataByAlamofire(path: .upcoming) { [weak self] (result: Result<MovieData, AFError>) in
+            guard let self else { return }
+            switch result {
+            case .success(let movieData):
+                self.upcomingMovies = movieData.results
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("데이터 불러오기 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // MARK: - Fetch Movies
+    private func fetchPopularMovies() {
+        NetworkManager.shared.fetchDataByAlamofire(path: .popular) { [weak self] (result: Result<MovieData, AFError>) in
+            guard let self else { return }
+            switch result {
+            case .success(let movieData):
+                self.popularMovies = movieData.results
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("데이터 불러오기 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     // MARK: - Actions
     @objc private func segmentedControlChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            print("현재상영영화 선택됨")
+            print("현재상영영화 선택됨")// 화면이동 다음 화면으로 갈거야
         case 1:
-            print("영화 검색 선택됨")
+            print("영화 검색 선택됨")// 화면이동 다음 화면으로 갈거야
         case 2:
-            print("마이페이지 선택됨")
+            print("마이페이지 선택됨")// 화면이동 다음 화면으로 갈거야
         default:
             break
         }
@@ -139,10 +174,9 @@ extension MovieListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        case 0: return topRatedMovies.count
+        case 0: return popularMovies.count
         case 1: return nowPlayingMovies.count
         case 2: return upcomingMovies.count
-        case 3: return trendingMovies.count
         default: return 0
         }
     }
@@ -151,17 +185,14 @@ extension MovieListViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
             return UICollectionViewCell()
         }
-        
-        let movie: Movie
+            
         switch indexPath.section {
-        case 0: movie = topRatedMovies[indexPath.item]
-        case 1: movie = nowPlayingMovies[indexPath.item]
-        case 2: movie = upcomingMovies[indexPath.item]
-        case 3: movie = trendingMovies[indexPath.item]
+        case 0: cell.movieData = popularMovies[indexPath.item]
+        case 1: cell.movieData = nowPlayingMovies[indexPath.item]
+        case 2: cell.movieData = upcomingMovies[indexPath.item]
         default:
             return UICollectionViewCell()
         }
-        cell.configure(with: movie.title ?? "제목 없음", imagePath: movie.posterPath ?? "")
         return cell
     }
     
@@ -181,16 +212,21 @@ extension MovieListViewController: UICollectionViewDataSource {
 extension MovieListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie: Movie
-        switch indexPath.section{
-        case 0: movie = topRatedMovies[indexPath.row]
-        case 1: movie = nowPlayingMovies[indexPath.row]
-        case 2: movie = upcomingMovies[indexPath.row]
-        case 3: movie = trendingMovies[indexPath.row]
+        switch indexPath.section {
+        case 0:
+            movie = popularMovies[indexPath.item]
+        case 1:
+            movie = nowPlayingMovies[indexPath.item]
+        case 2:
+            movie = upcomingMovies[indexPath.item]
         default:
             return
         }
-        let detailVC = DetailViewController()
-        detailVC.detailView.movieNameLable.text = nowPlayingMovies[indexPath.row].title
-        navigationController?.pushViewController(detailVC, animated: true)
-         }
+        
+        // DetailViewController에 영화 데이터 전달
+            let detailVC = DetailViewController()
+            detailVC.configure(with: movie)
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
 }
+

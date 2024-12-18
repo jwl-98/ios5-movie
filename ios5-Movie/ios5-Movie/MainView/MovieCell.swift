@@ -5,10 +5,25 @@
 // Created by 진욱의 Macintosh on 12/13/24.
 
 import UIKit
-import Kingfisher
 
 class MovieCell: UICollectionViewCell {
     static let identifier = "MovieCell"
+    
+    var movieData: Movie? {
+        didSet {
+            guard let movie = movieData else { return }
+            titleLabel.text = movie.title
+            
+            if let posterPath = movie.posterPath {
+                let imageUrl = "https://image.tmdb.org/t/p/w500\(posterPath)"
+                loadImage(from: imageUrl) { image in
+                    DispatchQueue.main.async {
+                        self.imageView.image = image
+                    }
+                }
+            }
+        }
+    }
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -19,7 +34,7 @@ class MovieCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let titleLabel: UILabel = {
+    private let  titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.textColor = .black
@@ -51,10 +66,17 @@ class MovieCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with title: String, imagePath: String) {
-        titleLabel.text = title
-        if let url = URL(string: "https://image.tmdb.org/t/p/w500\(imagePath)") {
-            imageView.kf.setImage(with: url)
-        }
-    }
+    private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+           guard let url = URL(string: urlString) else {
+               completion(nil)
+               return
+           }
+           DispatchQueue.global().async {
+               guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
+                   completion(nil)
+                   return
+               }
+               completion(image)
+           }
+       }
 }
