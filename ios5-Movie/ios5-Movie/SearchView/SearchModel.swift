@@ -6,18 +6,22 @@
 //
 
 import Foundation
+import Alamofire
+
 
 class SearchModel {
-    func getAllMovies(from movieListVC: MovieListSearchViewController) -> [String] {
-            return [""]
-        }
-        // 검색어로 영화 필터링
-        func filterMovies(_ movies: [String], with query: String) -> [String] {
-            if query.isEmpty {
-                return movies
+    private var movies: [Movie] = []
+    
+    func searchMovies(with query: String, completion: @escaping ([Movie]) -> Void) {
+        NetworkManager.shared.fetchSearchData(searchTerm: query) { (result: Result<MovieData, AFError>) in
+            switch result {
+            case .success(let movieData):
+                self.movies = movieData.results
+                completion(self.movies)
+            case .failure(let error):
+                print("검색실패: \(error.localizedDescription)")
+                completion([])
             }
-            return movies.filter { movie in
-                movie.lowercased().contains(query.lowercased())
-            }
         }
+    }
 }

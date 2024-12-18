@@ -9,24 +9,14 @@ import UIKit
 import SnapKit
 
 class SearchViewController: UIViewController, UISearchBarDelegate {
-    
+
     private let searchModel = SearchModel()
-    private var MoviesName: [String] = []
-    
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         setupNavBar()
         setupSearchController()
-        
     }
-    //메인화면 객체 설정
-    private let searchMovieListVC: MovieListSearchViewController = {
-        let vc = MovieListSearchViewController()
-        
-        return vc
-    }()
     
     //네비게이션 바 설정
     private func setupNavBar() {
@@ -39,7 +29,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     
     //서치 컨트롤러 기본 설정
     private lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
+        let searchController = UISearchController(searchResultsController: SearchListViewController())
         searchController.searchBar.placeholder = "영화 이름 검색"
         
         return searchController
@@ -52,27 +42,18 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.obscuresBackgroundDuringPresentation = false
     }
-    
-    //서치바내 취소버튼 눌리면 실행되는 동작 (navigationBar를 숨김)
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("취소버튼 눌림")
-    }
-    
-    private func setupUI() {
-        addChild(searchMovieListVC)
-        view.addSubview(searchMovieListVC.view)
-        searchMovieListVC.view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        searchMovieListVC.didMove(toParent: self)
-    }
 }
 
 extension SearchViewController {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let filteredMovies = searchModel.filterMovies(MoviesName, with: searchText)
-
+        if let resultsController = searchController.searchResultsController as? SearchListViewController {
+                    resultsController.updateSearchResults(with: searchText)
+                }
         print("\(searchText)")
+    }
+    //서치바내 취소버튼 눌리면 실행되는 동작
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("취소버튼 눌림")
     }
 }
 
