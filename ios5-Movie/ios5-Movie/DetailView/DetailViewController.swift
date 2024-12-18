@@ -30,10 +30,13 @@ final class DetailViewController: UIViewController {
     }
     
     func configure(with movie: Movie) {
+        self.movie = movie // 추가: movie 설정
+        
         detailView.movieNameLable.text = movie.title
         detailView.releaseDateLable.text = "출시일: \(movie.releaseDate ?? "N/A")"
         detailView.voteAverageLable.text = "평점: \(movie.voteAverage ?? 0.0)"
         detailView.movieDescriptionLable.text = movie.overview
+        
         if let posterPath = movie.posterPath {
             let imageUrl = "https://image.tmdb.org/t/p/w500\(posterPath)"
             loadImage(from: imageUrl) { image in
@@ -45,18 +48,18 @@ final class DetailViewController: UIViewController {
     }
     
     private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-          guard let url = URL(string: urlString) else {
-              completion(nil)
-              return
-          }
-          DispatchQueue.global().async {
-              guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
-                  completion(nil)
-                  return
-              }
-              completion(image)
-          }
-      }
+        guard let url = URL(string: urlString) else {
+            completion(nil)
+            return
+        }
+        DispatchQueue.global().async {
+            guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
+                completion(nil)
+                return
+            }
+            completion(image)
+        }
+    }
     
     
     private func setupButton() {
@@ -64,9 +67,10 @@ final class DetailViewController: UIViewController {
     }
     /// 영화 정보 넘기기
     @objc private func reservationButtonTapped() {
-        guard let title = movie?.title else { return } // 영화 데이터가 있는지 확인
+        guard let title = movie?.title else { return }
+        
         let paymentVC = PaymentViewController()
-        paymentVC.movieNameValueLabel.text = title // 영화 제목 전달
+        paymentVC.movieNameValueLabel.text = title
         navigationController?.pushViewController(paymentVC, animated: true)
     }
 }

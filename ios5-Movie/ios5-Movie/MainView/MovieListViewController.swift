@@ -130,13 +130,44 @@ class MovieListViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func segmentedControlChanged(_ sender: UISegmentedControl) {
+        // 기존 뷰 제거
+        view.subviews.filter { $0 !== segmentedControl && $0 !== collectionView }.forEach { $0.removeFromSuperview() }
+        
         switch sender.selectedSegmentIndex {
         case 0:
-            print("현재상영영화 선택됨")// 화면이동 다음 화면으로 갈거야
+            // 현재상영영화: 기본 콜렉션뷰 표시
+            collectionView.isHidden = false
+            
         case 1:
-            print("영화 검색 선택됨")// 화면이동 다음 화면으로 갈거야
+            // 영화 검색 화면 표시
+            let searchVC = SearchViewController()
+            addChild(searchVC)
+            view.addSubview(searchVC.view)
+            searchVC.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                searchVC.view.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+                searchVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                searchVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                searchVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+            searchVC.didMove(toParent: self)
+            collectionView.isHidden = true
+            
         case 2:
-            print("마이페이지 선택됨")// 화면이동 다음 화면으로 갈거야
+            // 마이페이지(로그인) 화면 표시 이거 마이페이지로 변경하셔야함
+            let loginVC = LoginView()
+            addChild(loginVC)
+            view.addSubview(loginVC.view)
+            loginVC.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                loginVC.view.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+                loginVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                loginVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                loginVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+            loginVC.didMove(toParent: self)
+            collectionView.isHidden = true
+            
         default:
             break
         }
