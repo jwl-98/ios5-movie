@@ -10,7 +10,7 @@ import UIKit
 
 final class DetailViewController: UIViewController {
     
-    private let detailView = DetailView()
+    let detailView = DetailView()
     
     private let dataManager = DummyMovieDataManager()
     

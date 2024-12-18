@@ -22,7 +22,6 @@ final class DetailView: UIScrollView {
     }()
     let movieNameLable: UILabel = {
         let label = UILabel()
-        label.text = "Test"
         label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
