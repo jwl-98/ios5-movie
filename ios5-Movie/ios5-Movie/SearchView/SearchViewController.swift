@@ -8,17 +8,33 @@
 import UIKit
 import SnapKit
 
-class SearchViewController: UIViewController, UISearchControllerDelegate, UISearchBarDelegate {
-    private let dummyViewController = DummyViewController()
+class SearchViewController: UIViewController, UISearchBarDelegate {
+    
+    private let searchModel = SearchModel()
+    private var MoviesName: [String] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         setupNavBar()
-        setupDummyViewController()
         setupSearchController()
-        dummyViewController.searchButtonAction = { [weak self] in
-            self?.showSearchBar()
-        }
+        
+    }
+    //메인화면 객체 설정
+    private let searchMovieListVC: MovieListSearchViewController = {
+        let vc = MovieListSearchViewController()
+        
+        return vc
+    }()
+    
+    //네비게이션 바 설정
+    private func setupNavBar() {
+        self.title = "영화 검색"
+        //네비게이션 바 타이틀 크기를 크게
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     //서치 컨트롤러 기본 설정
@@ -29,43 +45,40 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
         return searchController
     }()
     
-    //서치컨트롤러 델리게이트 설정
+    //서치바 델리게이트 설정
     private func setupSearchController() {
-        searchController.delegate = self
+        //취소버튼 동작을 위한 델리게이트
         searchController.searchBar.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
     }
-        
-    //네비게이션 바 설정
-    private func setupNavBar() {
-        self.title = "영화 검색"
-        //네비게이션 바 타이틀 크기를 크게
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.searchController = nil
-    }
-    //검색 버튼을 누르면 동작하는 함수 (서치바가 나타남)
-    private func showSearchBar() {
-        navigationItem.searchController = searchController
-        navigationItem.searchController?.isActive = true
-        navigationController?.navigationBar.isHidden = false
-        searchController.searchBar.becomeFirstResponder()
-    }
+    
     //서치바내 취소버튼 눌리면 실행되는 동작 (navigationBar를 숨김)
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print(#function)
-        navigationController?.navigationBar.isHidden = true
-        navigationItem.searchController = nil
+        print("취소버튼 눌림")
     }
-    private func setupDummyViewController() {
-        addChild(dummyViewController)
-        [
-            dummyViewController.view
-        ].forEach {view.addSubview($0)}
-        dummyViewController.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+    
+    private func setupUI() {
+        addChild(searchMovieListVC)
+        view.addSubview(searchMovieListVC.view)
+        searchMovieListVC.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-        dummyViewController.didMove(toParent: self)
+        searchMovieListVC.didMove(toParent: self)
     }
 }
 
+extension SearchViewController {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let filteredMovies = searchModel.filterMovies(MoviesName, with: searchText)
 
+        print("\(searchText)")
+    }
+}
+
+//@available(iOS 17.0, *)
+//#Preview {
+//    let searchVC = SearchViewController()
+//    let navigationController = UINavigationController(rootViewController: searchVC)
+//    return navigationController
+//}
