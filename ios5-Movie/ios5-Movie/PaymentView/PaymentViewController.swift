@@ -193,8 +193,13 @@ class PaymentViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
             self.resetValues()
+            
+            // 결제 완료 알림창
             let successAlert = UIAlertController(title: "결제 완료", message: "결제가 완료되었습니다!", preferredStyle: .alert)
-            successAlert.addAction(UIAlertAction(title: "확인", style: .default))
+            successAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+                // 메인 화면으로 이동
+                self.navigationController?.popToRootViewController(animated: true)
+            }))
             self.present(successAlert, animated: true)
         }))
         
