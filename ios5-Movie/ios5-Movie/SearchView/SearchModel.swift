@@ -7,7 +7,7 @@
 
 import Foundation
 import Alamofire
-
+//
 
 class SearchModel {
     private var movies: [Movie] = []
