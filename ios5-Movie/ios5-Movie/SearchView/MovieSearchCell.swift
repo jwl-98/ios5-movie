@@ -16,7 +16,6 @@ class MovieSearchCell: UICollectionViewCell {
     // 영화 포스터 이미지뷰
     var posterImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -24,8 +23,8 @@ class MovieSearchCell: UICollectionViewCell {
     var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 14)
-        label.numberOfLines = 1
+        label.font = .boldSystemFont(ofSize: 14)
+        label.adjustsFontSizeToFitWidth = true
         
         return label
     }()
@@ -38,7 +37,7 @@ class MovieSearchCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //네트워크 통신을 통해 셀 설정
     func setupCell(with movie: Movie) {
         
         if let posterPath = movie.posterPath {
@@ -66,17 +65,13 @@ class MovieSearchCell: UICollectionViewCell {
         // 오토레이아웃 설정
         posterImageView.snp.makeConstraints {
             $0.top.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(20)
             $0.height.equalTo(posterImageView.snp.width).multipliedBy(1.5) // 3:2 비율
         }
         titleLabel.snp.makeConstraints {
-            $0.bottom.equalTo(posterImageView.snp.bottom).offset(5)
             $0.top.equalTo(posterImageView.snp.bottom).offset(0)
+            $0.bottom.equalToSuperview()
             $0.left.right.equalToSuperview()
         }
     }
-}
-
-@available(iOS 17.0, *)
-#Preview {
-    MovieListViewController()
 }
