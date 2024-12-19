@@ -11,7 +11,12 @@ import Foundation
 
 public enum MovieAPI {
     static let baseURL = "https://api.themoviedb.org/3/"
-    static let apiKey = "1a7f4bd945e56750ef4ce701f48834dc"
+    static let apiKey: String = {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "APIKey") as? String else {
+            fatalError("API 키가 설정되지 않았습니다.")
+        }
+        return key
+    }()
     
     static let urlQueryItems: [URLQueryItem] = [
         URLQueryItem(name: "api_key", value: apiKey),
@@ -33,4 +38,4 @@ struct MovieImage {
         return "\(imageBaseURL)w\(size)\(posterPath)"
     }
 }
- 
+

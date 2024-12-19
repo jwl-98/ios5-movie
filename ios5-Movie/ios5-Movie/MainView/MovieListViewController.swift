@@ -64,7 +64,7 @@ class MovieListViewController: UIViewController {
     // MARK: - Setup UI
     
     private func setupNaviBar() {
-        title = "ㅇㅇ영화관🍿"
+        title = "6GV🍿"
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()  // 불투명으로
         appearance.backgroundColor = .white
