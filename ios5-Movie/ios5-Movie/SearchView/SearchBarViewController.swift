@@ -8,10 +8,8 @@
 import UIKit
 import SnapKit
 
-class SearchViewController: UIViewController, UISearchBarDelegate {
+class SearchBarViewController: UIViewController, UISearchBarDelegate {
 
-    private let searchModel = SearchModel()
- 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
@@ -44,7 +42,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     }
 }
 
-extension SearchViewController {
+extension SearchBarViewController {
+    //서치바 입력값을 ListVC로 전달
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if let resultsController = searchController.searchResultsController as? SearchListViewController {
                     resultsController.updateSearchResults(with: searchText)
