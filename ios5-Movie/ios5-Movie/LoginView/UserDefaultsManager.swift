@@ -75,4 +75,12 @@ class UserDefaultsManager {
         }
         return bookings
     }
+    
+    func removeBooking(booking: BookingInfo) {
+        var bookings = getBookingHistory()
+        bookings.removeAll { $0.movieTitle == booking.movieTitle &&
+                            $0.bookingDate == booking.bookingDate &&
+                            $0.bookingTime == booking.bookingTime }
+        UserDefaults.standard.set(try? JSONEncoder().encode(bookings), forKey: "bookingHistory")
+    }
 }
