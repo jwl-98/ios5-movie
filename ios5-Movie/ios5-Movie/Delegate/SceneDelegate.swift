@@ -14,13 +14,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        window = UIWindow(windowScene: windowScene)
+        let window = UIWindow(windowScene: windowScene)
         
-        /// 네비게이션 컨트롤러 생성
-        let navigationController = UINavigationController(rootViewController: MovieListViewController())
+        // 로그인 상태에 따라 초기 화면 설정
+        if UserDefaultsManager.shared.isLoggedIn {
+            // 이미 로그인된 상태면 메인 화면으로
+            let mainVC = MovieListViewController()
+            let navigationController = UINavigationController(rootViewController: mainVC)
+            window.rootViewController = navigationController
+        } else {
+            // 로그인이 필요한 상태면 로그인 화면으로
+            let loginVC = LoginView()
+            let navigationController = UINavigationController(rootViewController: loginVC)
+            window.rootViewController = navigationController
+        }
         
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        self.window = window
+        window.makeKeyAndVisible()
     }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
