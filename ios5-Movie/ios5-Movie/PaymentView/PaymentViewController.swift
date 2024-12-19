@@ -130,7 +130,7 @@ class PaymentViewController: UIViewController {
         movieNameValueLabel.snp.makeConstraints { make in
             make.centerY.equalTo(movieNameTitleLabel)
             make.leading.equalTo(movieNameTitleLabel.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.equalToSuperview().offset(-40)
         }
         
         // 날짜 라벨
