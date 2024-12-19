@@ -8,141 +8,135 @@
 import UIKit
 import SnapKit
 
+// MARK: - UserPageView
+/// 사용자의 프로필과 예매 내역을 보여주는 화면
 class UserPageView: UIViewController {
     
     // MARK: - Properties
+    /// UserDefaults 매니저 인스턴스
     private let userDefaults = UserDefaultsManager.shared
     
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .systemGray5
-        imageView.layer.cornerRadius = 40
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    /// 사용자 프로필 이미지를 표시하는 이미지뷰
+    private let profileImageView = UIImageView()
     
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.font = .systemFont(ofSize: 20, weight: .semibold)
-        return label
-    }()
+    /// 사용자 이름을 표시하는 레이블
+    private let nameLabel = UILabel()
     
-    private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
-    }()
+    /// 사용자 이메일을 표시하는 레이블
+    private let emailLabel = UILabel()
     
-    private let ticketsSectionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "My Tickets"
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        return label
-    }()
+    /// "My Tickets" 섹션 제목 레이블
+    private let ticketsSectionLabel = UILabel()
     
-    private let ticketView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 12
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.1
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 4
-        return view
-    }()
+    /// 예매 내역을 담는 컨테이너 뷰
+    private let ticketView = UIView()
     
-    private let logoutButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Logout", for: .normal)
-        button.setTitleColor(.red, for: .normal)
-        return button
-    }()
+    /// 로그아웃 버튼
+    private let logoutButton = UIButton(type: .system)
     
-    private let movieTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        return label
-    }()
-
-    private let bookingDateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
-    }()
-
-    private let peopleCountLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
-    }()
+    /// 예매 내역을 표시할 테이블뷰
+    private let tableView = UITableView()
     
-    // MARK: - Lifecycle
+    /// 예매 내역 데이터를 저장할 배열
+    private var bookings: [UserDefaultsManager.BookingInfo] = []
+    
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        configureUI()
     }
     
-    // MARK: - Setup
-    private func setupUI() {
+    // MARK: - UI Configuration
+    /// UI 요소 설정 및 레이아웃 구성
+    private func configureUI() {
+        setupBasic()
+        setupComponents()
+        setupConstraints()
+    }
+    
+    /// 기본 설정
+    private func setupBasic() {
         view.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    /// UI 컴포넌트 설정
+    private func setupComponents() {
+        setupProfileImageView()
+        setupLabels()
+        setupTicketView()
+        setupTableView()
+        setupLogoutButton()
+        loadUserData()
         
-        // 저장된 사용자 정보 표시
+        // 뷰에 컴포넌트 추가
+        [profileImageView, nameLabel, emailLabel,
+         ticketsSectionLabel, ticketView, logoutButton].forEach {
+            view.addSubview($0)
+        }
+        ticketView.addSubview(tableView)
+    }
+    
+    /// 프로필 이미지뷰 설정
+    private func setupProfileImageView() {
+        profileImageView.backgroundColor = .systemGray5
+        profileImageView.layer.cornerRadius = 40
+        profileImageView.clipsToBounds = true
+    }
+    
+    /// 레이블 설정
+    private func setupLabels() {
+        nameLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        
+        emailLabel.font = .systemFont(ofSize: 14)
+        emailLabel.textColor = .gray
+        
+        ticketsSectionLabel.text = "My Tickets"
+        ticketsSectionLabel.font = .systemFont(ofSize: 18, weight: .medium)
+    }
+    
+    /// 티켓 뷰 설정
+    private func setupTicketView() {
+        ticketView.backgroundColor = .white
+        ticketView.layer.cornerRadius = 12
+        ticketView.layer.shadowColor = UIColor.black.cgColor
+        ticketView.layer.shadowOpacity = 0.1
+        ticketView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        ticketView.layer.shadowRadius = 4
+    }
+    
+    /// 테이블뷰 설정
+    private func setupTableView() {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BookingCell")
+        tableView.backgroundColor = .white
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+    
+    /// 로그아웃 버튼 설정
+    private func setupLogoutButton() {
+        logoutButton.setTitle("Logout", for: .normal)
+        logoutButton.setTitleColor(.red, for: .normal)
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+    }
+    
+    /// 사용자 데이터 로드
+    private func loadUserData() {
         if let savedEmail = UserDefaults.standard.string(forKey: "userEmail") {
             emailLabel.text = savedEmail
         }
         
-        // 저장된 사용자 이름 표시
         if let savedName = UserDefaults.standard.string(forKey: "userName") {
             nameLabel.text = savedName
-        } else {
-            // 이름이 없을 경우 이메일의 @ 앞부분을 표시
-            if let email = emailLabel.text {
-                let username = email.components(separatedBy: "@")[0]
-                nameLabel.text = username
-            }
+        } else if let email = emailLabel.text {
+            nameLabel.text = email.components(separatedBy: "@")[0]
         }
         
-        // Add subviews
-        [profileImageView, nameLabel, emailLabel, ticketsSectionLabel,
-         ticketView, logoutButton].forEach { view.addSubview($0) }
-        
-        setupConstraints()
-        setupActions()
-        
-        // 예매 정보 표시
-        let bookingInfo = userDefaults.getBookingInfo()
-        if let title = bookingInfo.title {
-            movieTitleLabel.text = "영화: \(title)"
-            bookingDateLabel.text = "날짜: \(bookingInfo.date ?? "") \(bookingInfo.time ?? "")"
-            peopleCountLabel.text = "인원: \(bookingInfo.count ?? 0)명"
-            
-            // 티켓 뷰에 레이블 추가
-            ticketView.addSubview(movieTitleLabel)
-            ticketView.addSubview(bookingDateLabel)
-            ticketView.addSubview(peopleCountLabel)
-            
-            // 티켓 뷰 내부 레이블 제약조건
-            movieTitleLabel.snp.makeConstraints { make in
-                make.top.leading.equalToSuperview().offset(15)
-            }
-            
-            bookingDateLabel.snp.makeConstraints { make in
-                make.top.equalTo(movieTitleLabel.snp.bottom).offset(10)
-                make.leading.equalTo(movieTitleLabel)
-            }
-            
-            peopleCountLabel.snp.makeConstraints { make in
-                make.top.equalTo(bookingDateLabel.snp.bottom).offset(10)
-                make.leading.equalTo(movieTitleLabel)
-            }
-        }
+        bookings = userDefaults.getBookingHistory()
     }
     
+    // MARK: - Auto Layout
+    /// SnapKit을 활용한 제약조건 설정
     private func setupConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
@@ -168,22 +162,21 @@ class UserPageView: UIViewController {
         ticketView.snp.makeConstraints { make in
             make.top.equalTo(ticketsSectionLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(100)
+            make.height.equalTo(300)
         }
         
         logoutButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-20)
         }
-    }
-    
-    private func setupActions() {
-        logoutButton.addTarget(self,
-                             action: #selector(logoutButtonTapped),
-                             for: .touchUpInside)
+        
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     // MARK: - Actions
+    /// 로그아웃 버튼 탭 핸들러
     @objc private func logoutButtonTapped() {
         let alert = UIAlertController(title: "로그아웃",
                                     message: "로그아웃 하시겠습니까?",
@@ -193,7 +186,6 @@ class UserPageView: UIViewController {
         alert.addAction(UIAlertAction(title: "확인", style: .destructive) { [weak self] _ in
             self?.userDefaults.logout()
             
-            // 로그인 화면으로 이동
             let loginVC = LoginView()
             let nav = UINavigationController(rootViewController: loginVC)
             nav.modalPresentationStyle = .fullScreen
@@ -201,6 +193,29 @@ class UserPageView: UIViewController {
         })
         
         present(alert, animated: true)
+    }
+}
+
+// MARK: - TableView Extension
+extension UserPageView: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return bookings.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BookingCell", for: indexPath)
+        let booking = bookings[indexPath.row]
+        
+        var content = cell.defaultContentConfiguration()
+        content.text = booking.movieTitle
+        content.secondaryText = "\(booking.bookingDate) \(booking.bookingTime) - \(booking.peopleCount)명"
+        cell.contentConfiguration = content
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
 }
 

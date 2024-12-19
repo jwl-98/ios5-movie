@@ -16,14 +16,17 @@ class UserDefaultsManager {
     private enum Keys {
         static let isLoggedIn = "isLoggedIn"
         static let userEmail = "userEmail"
-        static let userPassword = "userPassword"  // 실제 앱에서는 암호를 UserDefaults에 저장하면 안됨
+        static let userPassword = "userPassword"
         static let userName = "userName"
-        
-        // 예매 정보 관련 키
-        static let movieTitle = "movieTitle"
-        static let bookingDate = "bookingDate"
-        static let bookingTime = "bookingTime"
-        static let peopleCount = "peopleCount"
+        static let bookingHistory = "bookingHistory"
+    }
+    
+    // 예매 정보 구조체
+    struct BookingInfo: Codable {
+        let movieTitle: String
+        let bookingDate: String
+        let bookingTime: String
+        let peopleCount: Int
     }
     
     // 로그인 상태 저장
@@ -47,30 +50,29 @@ class UserDefaultsManager {
     // 로그아웃
     func logout() {
         isLoggedIn = false
-//        // 회원정보 삭제
-//        defaults.removeObject(forKey: Keys.userEmail)
-//        defaults.removeObject(forKey: Keys.userPassword)
-//        // 예매 정보 삭제
-//        defaults.removeObject(forKey: Keys.movieTitle)
-//        defaults.removeObject(forKey: Keys.bookingDate)
-//        defaults.removeObject(forKey: Keys.bookingTime)
-//        defaults.removeObject(forKey: Keys.peopleCount)
     }
     
     // 예매 정보 저장
     func saveBookingInfo(movieTitle: String, bookingDate: String, bookingTime: String, peopleCount: Int) {
-        defaults.set(movieTitle, forKey: Keys.movieTitle)
-        defaults.set(bookingDate, forKey: Keys.bookingDate)
-        defaults.set(bookingTime, forKey: Keys.bookingTime)
-        defaults.set(peopleCount, forKey: Keys.peopleCount)
+        let newBooking = BookingInfo(movieTitle: movieTitle,
+                                   bookingDate: bookingDate,
+                                   bookingTime: bookingTime,
+                                   peopleCount: peopleCount)
+        
+        var bookings = getBookingHistory()
+        bookings.append(newBooking)
+        
+        if let encoded = try? JSONEncoder().encode(bookings) {
+            defaults.set(encoded, forKey: Keys.bookingHistory)
+        }
     }
     
-    // 예매 정보 가져오기
-    func getBookingInfo() -> (title: String?, date: String?, time: String?, count: Int?) {
-        let title = defaults.string(forKey: Keys.movieTitle)
-        let date = defaults.string(forKey: Keys.bookingDate)
-        let time = defaults.string(forKey: Keys.bookingTime)
-        let count = defaults.integer(forKey: Keys.peopleCount)
-        return (title, date, time, count > 0 ? count : nil)
+    // 모든 예매 정보 가져오기
+    func getBookingHistory() -> [BookingInfo] {
+        guard let data = defaults.data(forKey: Keys.bookingHistory),
+              let bookings = try? JSONDecoder().decode([BookingInfo].self, from: data) else {
+            return []
+        }
+        return bookings
     }
 }
