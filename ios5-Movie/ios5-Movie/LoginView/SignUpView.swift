@@ -97,6 +97,11 @@ class SignUpView: UIViewController {
         textField.autocapitalizationType = .none
         textField.isSecureTextEntry = isSecure
         
+        if isSecure {
+            textField.isSecureTextEntry = true
+            textField.textContentType = .oneTimeCode  // 자동 암호 제안 비활성화
+        }
+        
         // 밑줄 추가
         let border = CALayer()
         border.frame = CGRect(x: 0, y: 30, width: UIScreen.main.bounds.width - 40, height: 1)

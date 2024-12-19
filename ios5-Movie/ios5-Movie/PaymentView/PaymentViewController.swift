@@ -213,7 +213,6 @@ class PaymentViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "네", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
             
-            // 예매 정보 저장
             let movieTitle = self.movieNameValueLabel.text ?? ""
             let date = self.bookingDate ?? ""
             let formatter = DateFormatter()
