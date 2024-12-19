@@ -263,7 +263,3 @@ class PaymentViewController: UIViewController {
         totalPriceLabel.text = "총 금액: \(totalPrice)원"
     }
 }
-@available(iOS 17.0, *)
-#Preview {
-    PaymentViewController()
-}
