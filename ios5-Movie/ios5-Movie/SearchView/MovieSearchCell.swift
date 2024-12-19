@@ -13,15 +13,33 @@ class MovieSearchCell: UICollectionViewCell {
     
     private var imageURL: String?
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        posterImageView.image = nil
-        titleLabel.text = nil
-        imageURL = nil
+    // 영화 포스터 이미지뷰
+    var posterImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    // 영화 제목 레이블
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+        
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
     }
     
-    func configure(with movie: Movie) {
-        titleLabel.text = movie.title
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupCell(with movie: Movie) {
         
         if let posterPath = movie.posterPath {
             let imageURL = MovieImage.movieImageURL(size: 500, posterPath: posterPath)
@@ -35,35 +53,11 @@ class MovieSearchCell: UICollectionViewCell {
     
                 DispatchQueue.main.async {
                     self.posterImageView.image = UIImage(data: data)
+                    self.titleLabel.text = movie.title
                 }
             }
         }
     }
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // 영화 포스터 이미지뷰
-    var posterImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    // 영화 제목 레이블
-    var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 14)
-        label.numberOfLines = 2
-        
-        return label
-    }()
     
     private func setupUI() {
         
@@ -75,8 +69,14 @@ class MovieSearchCell: UICollectionViewCell {
             $0.height.equalTo(posterImageView.snp.width).multipliedBy(1.5) // 3:2 비율
         }
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(posterImageView.snp.bottom).offset(1)
+            $0.bottom.equalTo(posterImageView.snp.bottom).offset(5)
+            $0.top.equalTo(posterImageView.snp.bottom).offset(0)
             $0.left.right.equalToSuperview()
         }
     }
+}
+
+@available(iOS 17.0, *)
+#Preview {
+    MovieListViewController()
 }
