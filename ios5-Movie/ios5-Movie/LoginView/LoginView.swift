@@ -165,12 +165,14 @@ class LoginView: UIViewController {
         // UserDefaults에서 저장된 값 확인
         let savedEmail = UserDefaults.standard.string(forKey: "userEmail")
         let savedPassword = UserDefaults.standard.string(forKey: "userPassword")
+        let savedName = UserDefaults.standard.string(forKey: "userName")  // 이름 가져오기
         
         if email == savedEmail && password == savedPassword {
-            userDefaults.saveUserCredentials(email: email, password: password)
+            // 이름 정보도 함께 저장
+            userDefaults.saveUserCredentials(email: email, password: password, name: savedName ?? "")
             
             // 로그인 성공 시 메인 화면으로 이동
-            let mainVC = ViewController()
+            let mainVC = MovieListViewController()
             navigationController?.setViewControllers([mainVC], animated: true)
         } else {
             let alert = UIAlertController(title: "로그인 실패",

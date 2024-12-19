@@ -17,7 +17,7 @@ class PaymentViewController: UIViewController {
     // UI 요소들
     private let bookingLabel = UILabel()
     private let movieNameTitleLabel = UILabel()
-    private let movieNameValueLabel = UILabel()
+    let movieNameValueLabel = UILabel()
     private let dateLabel = UILabel()
     private let datePicker = UIDatePicker()
     private let totalPriceLabel = UILabel() // 총 금액 라벨
@@ -51,7 +51,7 @@ class PaymentViewController: UIViewController {
         view.addSubview(movieNameTitleLabel)
         
         // 영화명 값 레이블
-        movieNameValueLabel.text = "울버린"
+        
         movieNameValueLabel.font = UIFont.systemFont(ofSize: 18)
         movieNameValueLabel.textAlignment = .right
         view.addSubview(movieNameValueLabel)
@@ -101,7 +101,7 @@ class PaymentViewController: UIViewController {
     }
     
     private func setupDatePicker() {
-        datePicker.datePickerMode = .date
+        datePicker.datePickerMode = .dateAndTime // 날짜와 시간 모두 선택
         datePicker.preferredDatePickerStyle = .compact
     }
     
@@ -169,7 +169,7 @@ class PaymentViewController: UIViewController {
     // 날짜가 선택될 시에 옆에 날짜에 표시가 되게끔
     @objc private func datePickerChanged() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm" // 날짜와 시간 형식 추가
         bookingDate = formatter.string(from: datePicker.date)
         dateLabel.text = "날짜: \(bookingDate ?? "")"
     }
@@ -191,9 +191,27 @@ class PaymentViewController: UIViewController {
     @objc private func payButtonTapped() {
         let alert = UIAlertController(title: "결제 확인", message: "결제를 하시겠습니까?", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "네", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            
+            // 예매 정보 저장
+            let movieTitle = self.movieNameValueLabel.text ?? ""
+            let date = self.bookingDate ?? ""
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            let time = formatter.string(from: self.datePicker.date)
+            
+            UserDefaultsManager.shared.saveBookingInfo(
+                movieTitle: movieTitle,
+                bookingDate: date,
+                bookingTime: time,
+                peopleCount: self.peopleCount
+            )
+            
             self.resetValues()
-            let successAlert = UIAlertController(title: "결제 완료", message: "결제가 완료되었습니다!", preferredStyle: .alert)
+            let successAlert = UIAlertController(title: "결제 완료",
+                                               message: "결제가 완료되었습니다!",
+                                               preferredStyle: .alert)
             successAlert.addAction(UIAlertAction(title: "확인", style: .default))
             self.present(successAlert, animated: true)
         }))
