@@ -162,7 +162,7 @@ class UserPageView: UIViewController {
         ticketView.snp.makeConstraints { make in
             make.top.equalTo(ticketsSectionLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(300)
+            make.height.equalTo(450)
         }
         
         logoutButton.snp.makeConstraints { make in
@@ -216,6 +216,42 @@ extension UserPageView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+    // 스와이프 삭제 기능 추가
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] (action, view, completion) in
+            guard let self = self else { return }
+            
+            // 삭제 확인 알림창
+            let alert = UIAlertController(title: "예매 내역 삭제",
+                                        message: "이 예매 내역을 삭제하시겠습니까?",
+                                        preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "취소", style: .cancel) { _ in
+                completion(false)
+            })
+            
+            alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { _ in
+                // 데이터 소스에서 항목 삭제
+                let bookingToDelete = self.bookings[indexPath.row]
+                self.bookings.remove(at: indexPath.row)
+                
+                // UserDefaults에서도 삭제
+                self.userDefaults.removeBooking(booking: bookingToDelete)
+                
+                // 테이블뷰에서 행 삭제
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                completion(true)
+            })
+            
+            self.present(alert, animated: true)
+        }
+        
+        deleteAction.backgroundColor = .systemRed
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
     }
 }
 
