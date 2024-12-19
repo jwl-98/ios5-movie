@@ -72,6 +72,7 @@ class MovieListViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.isHidden = false
     }
     
     private func setupUI() {
@@ -170,56 +171,52 @@ class MovieListViewController: UIViewController {
         }
     }
     
-    // MARK: - Actions
+    // MARK: - 세그먼트 선택 시 화면전환
+    
     @objc private func segmentedControlChanged(_ sender: UISegmentedControl) {
-        // 기존 뷰 제거
+        /// 기존 뷰 제거
         containerView.subviews.forEach { $0.removeFromSuperview() }
         
+        /// 선택된 세그먼트에 따라 표시할 뷰
+        let selectedView: UIView
+        
         switch sender.selectedSegmentIndex {
-            
+        /// 컬렉션뷰
         case 0:
-            // 현재상영영화: 기본 콜렉션뷰 표시
-            containerView.addSubview(collectionView)
-            NSLayoutConstraint.activate([
-                collectionView.topAnchor.constraint(equalTo: containerView.topAnchor),
-                collectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-                collectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-                collectionView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            ])
+            selectedView = collectionView
             
+        /// 영화검색 페이지
         case 1:
-            // 영화 검색 화면 표시
             let searchVC = SearchListViewController()
             addChild(searchVC)
-            containerView.addSubview(searchVC.view)
-            searchVC.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                searchVC.view.topAnchor.constraint(equalTo: containerView.topAnchor),
-                searchVC.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-                searchVC.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-                searchVC.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            ])
+            selectedView = searchVC.view
             searchVC.didMove(toParent: self)
             
+        /// 마이페이지
         case 2:
-            // 마이페이지(로그인) 화면 표시 이거 마이페이지로 변경하셔야함
-
             let userVC = UserPageView()
             addChild(userVC)
-            containerView.addSubview(userVC.view)
-            userVC.view.translatesAutoresizingMaskIntoConstraints = false
-
-            NSLayoutConstraint.activate([
-                userVC.view.topAnchor.constraint(equalTo: containerView.topAnchor),
-                userVC.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-                userVC.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-                userVC.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            ])
+            selectedView = userVC.view
             userVC.didMove(toParent: self)
             
         default:
-            break
+            return
         }
+        
+        addSubviewToContainer(selectedView)
+    }
+
+    /// 세그먼트 선택 뷰 추가, 오토레이아웃
+    private func addSubviewToContainer(_ view: UIView) {
+        containerView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: containerView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
     }
     
     // MARK: - Layout Configuration
