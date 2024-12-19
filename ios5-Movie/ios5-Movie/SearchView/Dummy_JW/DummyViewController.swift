@@ -22,12 +22,11 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.isHidden = true
     }
     
-    private var searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let button = UIButton()
         button.setTitle("검색", for: .normal)
         button.backgroundColor = .red
         button.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
-        
         return button
     }()
     
@@ -47,18 +46,12 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
         return collectionView
     }()
     
-    //검색버튼 동작
-    @objc
-    private func searchButtonTapped() {
-        print(#function)
-        searchButtonAction?()
-    }
-   
+    // MARK: - Setup UI
     private func setupUI() {
         [
             collectionView,
             searchButton
-        ].forEach {view.addSubview($0)}
+        ].forEach { view.addSubview($0) }
         
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -69,13 +62,19 @@ class DummyViewController: UIViewController, UICollectionViewDelegate {
             $0.bottom.equalToSuperview().inset(20)
         }
     }
-    
+
+    // MARK: - Setup CollectionView
     private func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
     }
+    
+    // 검색 버튼 동작
+    @objc private func searchButtonTapped() {
+        print(#function)
+        searchButtonAction?()
+    }
 }
-
 
 extension DummyViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -95,5 +94,5 @@ extension DummyViewController: UICollectionViewDataSource {
 
 @available(iOS 17.0, *)
 #Preview {
-    TestVcViewController()
+    DummyViewController()
 }

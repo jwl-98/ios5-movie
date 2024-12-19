@@ -17,7 +17,7 @@ class PaymentViewController: UIViewController {
     // UI 요소들
     private let bookingLabel = UILabel()
     private let movieNameTitleLabel = UILabel()
-    private let movieNameValueLabel = UILabel()
+    let movieNameValueLabel = UILabel()
     private let dateLabel = UILabel()
     private let datePicker = UIDatePicker()
     private let totalPriceLabel = UILabel() // 총 금액 라벨
@@ -51,7 +51,7 @@ class PaymentViewController: UIViewController {
         view.addSubview(movieNameTitleLabel)
         
         // 영화명 값 레이블
-        movieNameValueLabel.text = "울버린"
+        
         movieNameValueLabel.font = UIFont.systemFont(ofSize: 18)
         movieNameValueLabel.textAlignment = .right
         view.addSubview(movieNameValueLabel)
