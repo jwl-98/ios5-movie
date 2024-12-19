@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 // MARK: - DetailView Controller
 
 final class DetailViewController: UIViewController {
@@ -22,16 +23,9 @@ final class DetailViewController: UIViewController {
         self.view = detailView
     }
     
-    /// 네비바가 나오지 않는 오류 방지
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButton()
-        setupNaviBar()
     }
     
     private func setupMovieDatas() {
@@ -50,16 +44,6 @@ final class DetailViewController: UIViewController {
         if let posterPath = movie.posterPath {
             detailView.movieImageURL = MovieImage.movieImageURL(size: 400, posterPath: posterPath)
         }
-    }
-    
-    private func setupNaviBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()  // 불투명으로
-        appearance.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .systemBlue
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
     private func setupButton() {
