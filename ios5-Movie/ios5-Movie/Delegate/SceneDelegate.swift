@@ -4,13 +4,21 @@
 //
 // Created by 진욱의 Macintosh on 12/13/24.
 //
+
 import UIKit
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
     var window: UIWindow?
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
         window = UIWindow(windowScene: windowScene)
+        
+        /// 네비게이션 컨트롤러 생성
         let navigationController = UINavigationController(rootViewController: MovieListViewController())
+        
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

@@ -7,8 +7,8 @@
 
 import UIKit
 import SnapKit
-// MARK: - DetailView UI
 
+// MARK: - DetailView UI
 final class DetailView: UIScrollView {
     
     private let contentView = UIView()
