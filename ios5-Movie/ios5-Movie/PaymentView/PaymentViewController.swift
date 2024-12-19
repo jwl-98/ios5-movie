@@ -111,62 +111,76 @@ class PaymentViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        // 예매내역 타이틀
         bookingLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(80)
-            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(150) // 여백 줄이기
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
+        // 영화명 레이블 타이틀
         movieNameTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(bookingLabel.snp.bottom).offset(80)
-            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(bookingLabel.snp.bottom).offset(60) // 여백 줄이기
+            make.leading.equalToSuperview().offset(50)
             make.width.equalTo(80)
         }
         
+        // 영화명 값 레이블 (두 줄 허용)
+        movieNameValueLabel.numberOfLines = 2
         movieNameValueLabel.snp.makeConstraints { make in
             make.centerY.equalTo(movieNameTitleLabel)
-            make.left.equalTo(movieNameTitleLabel.snp.right).offset(10)
-            make.right.equalToSuperview().offset(-50)
+            make.leading.equalTo(movieNameTitleLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
+        // 날짜 라벨
         dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieNameTitleLabel.snp.bottom).offset(80)
-            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(movieNameTitleLabel.snp.bottom).offset(60)
+            make.leading.equalToSuperview().offset(50)
             make.centerY.equalTo(datePicker)
         }
         
+        // 날짜 선택기
         datePicker.snp.makeConstraints { make in
-            make.left.equalTo(dateLabel.snp.right).offset(10)
+            make.leading.equalTo(dateLabel.snp.trailing).offset(40)
             make.centerY.equalTo(dateLabel)
-            make.right.lessThanOrEqualToSuperview().offset(-20)
+            make.trailing.lessThanOrEqualToSuperview().offset(-40)
         }
         
+        // 인원 수 라벨
         peopleLabel.snp.makeConstraints { make in
-            make.top.equalTo(datePicker.snp.bottom).offset(80)
-            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(datePicker.snp.bottom).offset(70)
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.lessThanOrEqualToSuperview().offset(-20)
         }
         
+        // - 버튼
         minusButton.snp.makeConstraints { make in
             make.centerY.equalTo(peopleLabel)
-            make.left.equalTo(peopleLabel.snp.right).offset(20)
+            make.leading.equalTo(peopleLabel.snp.trailing).offset(20)
             make.width.height.equalTo(30)
         }
         
+        // + 버튼
         plusButton.snp.makeConstraints { make in
             make.centerY.equalTo(peopleLabel)
-            make.left.equalTo(minusButton.snp.right).offset(10)
+            make.leading.equalTo(minusButton.snp.trailing).offset(10)
             make.width.height.equalTo(30)
         }
         
+        // 총 금액 라벨
         totalPriceLabel.snp.makeConstraints { make in
-            make.top.equalTo(peopleLabel.snp.bottom).offset(80)
-            make.left.equalToSuperview().offset(20)
+            make.top.equalTo(peopleLabel.snp.bottom).offset(70)
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.lessThanOrEqualToSuperview().offset(-20)
         }
         
+        // 결제 버튼
         payButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
-            make.right.equalToSuperview().offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-70)
+            make.trailing.equalToSuperview().offset(-40)
             make.width.equalTo(120)
-            make.height.equalTo(40)
+            make.height.equalTo(50)
         }
     }
     
@@ -247,3 +261,8 @@ class PaymentViewController: UIViewController {
         totalPriceLabel.text = "총 금액: \(totalPrice)원"
     }
 }
+@available(iOS 17.0, *)
+#Preview {
+    PaymentViewController()
+}
+
