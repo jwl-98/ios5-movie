@@ -16,7 +16,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		1BB333C52D0FBADA00B77523 /* Exceptions for "ios5-Movie" folder in "ios5-Movie" target */ = {
+		E2738DB02D0BFFFB00615AF2 /* Exceptions for "ios5-Movie" folder in "ios5-Movie" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -29,7 +29,7 @@
 		E2738DA02D0BFFFA00615AF2 /* ios5-Movie */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				1BB333C52D0FBADA00B77523 /* Exceptions for "ios5-Movie" folder in "ios5-Movie" target */,
+				E2738DB02D0BFFFB00615AF2 /* Exceptions for "ios5-Movie" folder in "ios5-Movie" target */,
 			);
 			path = "ios5-Movie";
 			sourceTree = "<group>";

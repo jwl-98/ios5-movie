@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 // MARK: - MovieData Model
 struct MovieData: Codable {
     let page: Int
@@ -26,7 +27,3 @@ struct Movie: Codable {
         case voteAverage = "vote_average"
     }
 }
-/* Double 반올림하여 스트링 전환방법
- let voteAverage = movie.voteAverage
- String(format: "%.2f", voteAverage)
- */
