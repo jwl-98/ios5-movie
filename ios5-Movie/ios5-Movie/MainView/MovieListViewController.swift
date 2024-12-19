@@ -22,7 +22,7 @@ class MovieListViewController: UIViewController {
     private var popularMovies: [Movie] = []
     
     /// 컬렉션 뷰 섹션
-    private let sectionTitles = ["상영중 영화", "개봉 예정", "인기 있는"]
+    private let sectionTitles = ["상영중 영화", "개봉예정 영화", "Popular"]
     
     /// 세그먼트 설정
     private let segmentedControl: UISegmentedControl = {
