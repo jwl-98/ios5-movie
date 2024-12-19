@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 // MARK: - DetailView Controller
 
 final class DetailViewController: UIViewController {
@@ -31,7 +32,6 @@ final class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButton()
-        setupNaviBar()
     }
     
     private func setupMovieDatas() {
@@ -50,16 +50,6 @@ final class DetailViewController: UIViewController {
         if let posterPath = movie.posterPath {
             detailView.movieImageURL = MovieImage.movieImageURL(size: 400, posterPath: posterPath)
         }
-    }
-    
-    private func setupNaviBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()  // 불투명으로
-        appearance.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .systemBlue
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
     private func setupButton() {
