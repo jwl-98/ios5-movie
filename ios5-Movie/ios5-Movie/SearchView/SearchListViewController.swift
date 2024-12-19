@@ -69,8 +69,3 @@ extension SearchListViewController: UICollectionViewDataSource, UICollectionView
         return CGSize(width: width, height: width * 1.5)
     }
 }
-
-//@available(iOS 17.0, *)
-//#Preview {
-//    MovieListSearchViewController()
-//}
