@@ -203,10 +203,12 @@ class MovieListViewController: UIViewController {
             
         case 2:
             // 마이페이지(로그인) 화면 표시 이거 마이페이지로 변경하셔야함
+
             let userVC = UserPageView()
             addChild(userVC)
             containerView.addSubview(userVC.view)
             userVC.view.translatesAutoresizingMaskIntoConstraints = false
+
             NSLayoutConstraint.activate([
                 userVC.view.topAnchor.constraint(equalTo: containerView.topAnchor),
                 userVC.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
