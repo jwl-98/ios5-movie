@@ -187,10 +187,11 @@ class MovieListViewController: UIViewController {
             
         /// 영화검색 페이지
         case 1:
-            let searchVC = SearchListViewController()
-            addChild(searchVC)
-            selectedView = searchVC.view
-            searchVC.didMove(toParent: self)
+            let searchVC = SearchBarViewController()
+            let setNavBarForSearchBar = UINavigationController(rootViewController: searchVC)
+            addChild(setNavBarForSearchBar)
+            selectedView = setNavBarForSearchBar.view
+            setNavBarForSearchBar.didMove(toParent: self)
             
         /// 마이페이지
         case 2:
