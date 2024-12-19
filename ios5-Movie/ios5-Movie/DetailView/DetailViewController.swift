@@ -23,12 +23,6 @@ final class DetailViewController: UIViewController {
         self.view = detailView
     }
     
-    /// 네비바가 나오지 않는 오류 방지
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButton()
