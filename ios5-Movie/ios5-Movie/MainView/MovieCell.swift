@@ -14,12 +14,14 @@ class MovieCell: UICollectionViewCell {
             guard let movie = movieData else { return }
             titleLabel.text = movie.title
             
+            /// 이미지 path값을 url로
             if let posterPath = movie.posterPath {
                 self.imageURL = MovieImage.movieImageURL(size: 200, posterPath: posterPath)
             }
         }
     }
     
+    /// 변환된 Url 로 load
     var imageURL: String? {
         didSet {
             loadImage()

@@ -13,7 +13,7 @@ final class DetailView: UIScrollView {
     
     private let contentView = UIView()
     
-    /// 전달받을 URLString 변수
+    /// 전달받을 이미지URLString 변수
     var movieImageURL: String? {
         didSet {
             loadImage()
