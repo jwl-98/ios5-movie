@@ -37,13 +37,9 @@ class SearchListViewController: UIViewController {
         }
     }
     
+    //검색결과 업데이트
     func updateSearchResults(with searchText: String?) {
-        guard let searchText = searchText, !searchText.isEmpty else {
-            movies = []
-            collectionView.reloadData()
-            return
-        }
-        searchModel.searchMovies(with: searchText) { [weak self] movies in
+        searchModel.updateSearchResults(with: searchText) { [weak self] movies in
             self?.movies = movies
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
@@ -62,7 +58,7 @@ extension SearchListViewController: UICollectionViewDataSource, UICollectionView
             return UICollectionViewCell()
         }
         let movie = movies[indexPath.item]
-        cell.configure(with: movie) // Movie 타입으로 configure 메서드 호출
+        cell.setupCell(with: movie) // Movie 타입으로 configure 메서드 호출
         return cell
     }
     
