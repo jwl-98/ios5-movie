@@ -229,6 +229,7 @@ class PaymentViewController: UIViewController {
             
             self.resetValues()
 
+
             
             // 결제 완료 알림창
             let successAlert = UIAlertController(title: "결제 완료", message: "결제가 완료되었습니다!", preferredStyle: .alert)
@@ -238,6 +239,8 @@ class PaymentViewController: UIViewController {
             }))
  
            
+
+    
             self.present(successAlert, animated: true)
         }))
         
