@@ -10,13 +10,11 @@ import UIKit
 
 final class DetailViewController: UIViewController {
     
-    let detailView = DetailView()
+    private let detailView = DetailView()
     
-    private var movie: Movie?
-    
-    var imageUrl: String? {
+    var movieData: Movie? {
         didSet {
-            
+            setupMovieDatas()
         }
     }
     
@@ -24,50 +22,53 @@ final class DetailViewController: UIViewController {
         self.view = detailView
     }
     
+    /// 네비바가 나오지 않는 오류 방지
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButton()
+        setupNaviBar()
     }
     
-    func configure(with movie: Movie) {
-        self.movie = movie // 추가: movie 설정
+    private func setupMovieDatas() {
+        guard let movie = self.movieData else { return }
         
         detailView.movieNameLable.text = movie.title
         detailView.releaseDateLable.text = "출시일: \(movie.releaseDate ?? "N/A")"
-        detailView.voteAverageLable.text = "평점: \(movie.voteAverage ?? 0.0)"
-        detailView.movieDescriptionLable.text = movie.overview
+        detailView.movieDescriptionLable.text = (movie.overview?.isEmpty ?? true) ? "생략" : movie.overview
         
+        /// 소수점 셋째자리에서 반올림
+        if let voteAverage = movie.voteAverage {
+            detailView.voteAverageLable.text = "평점: \(String(format: "%.2f", voteAverage))"
+        }
+        
+        /// DetailView에 URL로 전달
         if let posterPath = movie.posterPath {
-            let imageUrl = "https://image.tmdb.org/t/p/w500\(posterPath)"
-            loadImage(from: imageUrl) { image in
-                DispatchQueue.main.async {
-                    self.detailView.detailImageView.image = image
-                }
-            }
+            detailView.movieImageURL = MovieImage.movieImageURL(size: 400, posterPath: posterPath)
         }
     }
     
-    private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-        guard let url = URL(string: urlString) else {
-            completion(nil)
-            return
-        }
-        DispatchQueue.global().async {
-            guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
-                completion(nil)
-                return
-            }
-            completion(image)
-        }
+    private func setupNaviBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()  // 불투명으로
+        appearance.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = .systemBlue
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
-    
     
     private func setupButton() {
         detailView.reservationButton.addTarget(self, action: #selector(reservationButtonTapped), for: .touchUpInside)
     }
-    /// 영화 정보 넘기기
+    
+    /// 영화 정보 넘기기 -> PaymentView
     @objc private func reservationButtonTapped() {
-        guard let title = movie?.title else { return }
+        guard let title = movieData?.title else { return }
         
         let paymentVC = PaymentViewController()
         paymentVC.movieNameValueLabel.text = title

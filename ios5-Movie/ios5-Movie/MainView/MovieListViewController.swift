@@ -9,12 +9,22 @@ import Alamofire
 class MovieListViewController: UIViewController {
     
     // MARK: - Properties
+    
+    private let networkManager = NetworkManager.shared
+    
+    // 현재 상영중 영화
     private var nowPlayingMovies: [Movie] = []
+    
+    // 개봉 예정 영화
     private var upcomingMovies: [Movie] = []
+    
+    // 인기있는 영화
     private var popularMovies: [Movie] = []
     
+    /// 컬렉션 뷰 섹션
     private let sectionTitles = ["Now Playing", "Upcoming", "Popular"]
     
+    /// 세그먼트 설정
     private let segmentedControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["현재상영영화", "영화 검색", "마이페이지"])
         control.selectedSegmentIndex = 0
@@ -40,9 +50,7 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupCollectionView()
-        fetchNowPlayingMovies()
-        fetchUpcomingMovies()
-        fetchPopularMovies()
+        fetchDatas()
     }
     
     // MARK: - Setup UI
@@ -80,9 +88,16 @@ class MovieListViewController: UIViewController {
                                 withReuseIdentifier: SectionHeaderView.identifier)
     }
     
-    // MARK: - Fetch Movies
+    // MARK: - Fetch API Datas
+    private func fetchDatas() {
+        fetchNowPlayingMovies()
+        fetchUpcomingMovies()
+        fetchPopularMovies()
+    }
+    
+    /// Fetch NowPlaying
     private func fetchNowPlayingMovies() {
-        NetworkManager.shared.fetchDataByAlamofire(path: .nowPlaying) { [weak self] (result: Result<MovieData, AFError>) in
+        networkManager.fetchDataByAlamofire(path: .nowPlaying) { [weak self] (result: Result<MovieData, AFError>) in
             guard let self else { return }
             switch result {
             case .success(let movieData):
@@ -96,9 +111,9 @@ class MovieListViewController: UIViewController {
         }
     }
     
-    // MARK: - Fetch Movies
+    /// Fetch Upcoming
     private func fetchUpcomingMovies() {
-        NetworkManager.shared.fetchDataByAlamofire(path: .upcoming) { [weak self] (result: Result<MovieData, AFError>) in
+        networkManager.fetchDataByAlamofire(path: .upcoming) { [weak self] (result: Result<MovieData, AFError>) in
             guard let self else { return }
             switch result {
             case .success(let movieData):
@@ -112,9 +127,9 @@ class MovieListViewController: UIViewController {
         }
     }
     
-    // MARK: - Fetch Movies
+    /// Fetch Popular
     private func fetchPopularMovies() {
-        NetworkManager.shared.fetchDataByAlamofire(path: .popular) { [weak self] (result: Result<MovieData, AFError>) in
+        networkManager.fetchDataByAlamofire(path: .popular) { [weak self] (result: Result<MovieData, AFError>) in
             guard let self else { return }
             switch result {
             case .success(let movieData):
@@ -175,19 +190,25 @@ class MovieListViewController: UIViewController {
     
     // MARK: - Layout Configuration
     private static func createSectionLayout(sectionIndex: Int) -> NSCollectionLayoutSection {
+        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
                                               heightDimension: .fractionalHeight(1.0))
+        
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
         item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
                                                heightDimension: .absolute(250))
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPagingCentered
         
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: .absolute(50))
+        
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
                                                                  elementKind: UICollectionView.elementKindSectionHeader,
                                                                  alignment: .top)
@@ -216,48 +237,47 @@ extension MovieListViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
             return UICollectionViewCell()
         }
-            
+        
         switch indexPath.section {
-        case 0: cell.movieData = popularMovies[indexPath.item]
-        case 1: cell.movieData = nowPlayingMovies[indexPath.item]
-        case 2: cell.movieData = upcomingMovies[indexPath.item]
+        case 0:
+            cell.movieData = popularMovies[indexPath.item]
+        case 1:
+            cell.movieData = nowPlayingMovies[indexPath.item]
+        case 2:
+            cell.movieData = upcomingMovies[indexPath.item]
         default:
             return UICollectionViewCell()
         }
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader,
-              let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: SectionHeaderView.identifier,
-                                                                           for: indexPath) as? SectionHeaderView else {
+              let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderView.identifier,for: indexPath) as? SectionHeaderView else {
             return UICollectionReusableView()
         }
-        header.configure(with: sectionTitles[indexPath.section])
+        header.configureHeader(with: sectionTitles[indexPath.section])
         return header
     }
 }
+
+// MARK: - UICollectionViewDelegate
 extension MovieListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie: Movie
+        
+        let detailVC = DetailViewController()
+        
         switch indexPath.section {
         case 0:
-            movie = popularMovies[indexPath.item]
+            detailVC.movieData = popularMovies[indexPath.item]
         case 1:
-            movie = nowPlayingMovies[indexPath.item]
+            detailVC.movieData = nowPlayingMovies[indexPath.item]
         case 2:
-            movie = upcomingMovies[indexPath.item]
+            detailVC.movieData = upcomingMovies[indexPath.item]
         default:
             return
         }
-        
-        // DetailViewController에 영화 데이터 전달
-            let detailVC = DetailViewController()
-            detailVC.configure(with: movie)
-            navigationController?.pushViewController(detailVC, animated: true)
-        }
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
 }
 

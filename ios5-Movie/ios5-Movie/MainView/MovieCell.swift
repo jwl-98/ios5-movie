@@ -15,13 +15,14 @@ class MovieCell: UICollectionViewCell {
             titleLabel.text = movie.title
             
             if let posterPath = movie.posterPath {
-                let imageUrl = "https://image.tmdb.org/t/p/w500\(posterPath)"
-                loadImage(from: imageUrl) { image in
-                    DispatchQueue.main.async {
-                        self.imageView.image = image
-                    }
-                }
+                self.imageURL = MovieImage.movieImageURL(size: 200, posterPath: posterPath)
             }
+        }
+    }
+    
+    var imageURL: String? {
+        didSet {
+            loadImage()
         }
     }
     
@@ -34,7 +35,7 @@ class MovieCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let  titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.textColor = .black
@@ -43,6 +44,13 @@ class MovieCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // 셀이 재사용되기 전에 호출되는 메서드
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // 이미지가 바뀌는 것처럼 보이는 현상을 없애기 위함
+        self.imageView.image = nil
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -66,17 +74,19 @@ class MovieCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-           guard let url = URL(string: urlString) else {
-               completion(nil)
-               return
-           }
-           DispatchQueue.global().async {
-               guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
-                   completion(nil)
-                   return
-               }
-               completion(image)
-           }
-       }
+    private func loadImage() {
+        
+        guard let urlString = self.imageURL, let url = URL(string: urlString) else { return }
+        
+        DispatchQueue.global().async {
+            guard let data = try? Data(contentsOf: url) else { return }
+            
+            // url 비교
+            guard urlString == url.absoluteString else { return }
+            
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+    }
 }

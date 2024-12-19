@@ -13,6 +13,7 @@ final class DetailView: UIScrollView {
     
     private let contentView = UIView()
     
+    /// 전달받을 URLString 변수
     var movieImageURL: String? {
         didSet {
             loadImage()
@@ -41,6 +42,7 @@ final class DetailView: UIScrollView {
     
     private let movieIntroduceLable: UILabel = {
         let label = UILabel()
+        label.text = "영화소개"
         label.font = .boldSystemFont(ofSize: 18)
         return label
     }()
@@ -79,6 +81,7 @@ final class DetailView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
+        // MARK: - 디테일 뷰 이미지 로드
     private func loadImage() {
         guard let imageURL = self.movieImageURL, let url = URL(string: imageURL) else { return }
         
@@ -134,7 +137,7 @@ final class DetailView: UIScrollView {
         
         movieIntroduceLable.snp.makeConstraints { make in
             make.leading.equalTo(detailImageView.snp.leading).offset(5)
-            make.top.equalTo(voteAverageLable.snp.bottom).offset(30)
+            make.top.equalTo(voteAverageLable.snp.bottom).offset(20)
         }
         
         movieDescriptionLable.snp.makeConstraints { make in

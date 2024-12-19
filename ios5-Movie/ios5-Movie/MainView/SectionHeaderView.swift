@@ -30,7 +30,7 @@ class SectionHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with title: String) {
+    func configureHeader(with title: String) {
         titleLabel.text = title
     }
 }

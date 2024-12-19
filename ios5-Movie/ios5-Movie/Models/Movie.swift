@@ -1,9 +1,12 @@
 //
-// Movie.swift
-// ios5-Movie
+//  Movie.swift
+//  ios5-Movie
+//
+//  Created by Watson22_YJ on 12/16/24.
 //
 
 import Foundation
+
 // MARK: - MovieData Model
 struct MovieData: Codable {
     let page: Int
@@ -24,7 +27,3 @@ struct Movie: Codable {
         case voteAverage = "vote_average"
     }
 }
-/* Double 반올림하여 스트링 전환방법
- let voteAverage = movie.voteAverage
- String(format: "%.2f", voteAverage)
- */
