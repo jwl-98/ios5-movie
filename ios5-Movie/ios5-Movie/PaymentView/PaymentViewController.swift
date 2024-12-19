@@ -46,8 +46,8 @@ class PaymentViewController: UIViewController {
         
         // 예매내역 타이틀
         bookingLabel.text = "예매내역"
-        bookingLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        bookingLabel.textColor = .blue
+        bookingLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        bookingLabel.textColor = .black
         view.addSubview(bookingLabel)
         
         // 영화명 레이블
