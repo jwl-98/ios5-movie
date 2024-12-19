@@ -113,15 +113,15 @@ class PaymentViewController: UIViewController {
     private func setupConstraints() {
         // 예매내역 타이틀
         bookingLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(150) // 여백 줄이기
-            make.leading.equalToSuperview().offset(50)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(80) // 여백 줄이기
+            make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-20)
         }
         
         // 영화명 레이블 타이틀
         movieNameTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(bookingLabel.snp.bottom).offset(60) // 여백 줄이기
-            make.leading.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().offset(30)
             make.width.equalTo(80)
         }
         
@@ -130,13 +130,13 @@ class PaymentViewController: UIViewController {
         movieNameValueLabel.snp.makeConstraints { make in
             make.centerY.equalTo(movieNameTitleLabel)
             make.leading.equalTo(movieNameTitleLabel.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.equalToSuperview().offset(-40)
         }
         
         // 날짜 라벨
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(movieNameTitleLabel.snp.bottom).offset(60)
-            make.leading.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().offset(30)
             make.centerY.equalTo(datePicker)
         }
         
@@ -150,7 +150,7 @@ class PaymentViewController: UIViewController {
         // 인원 수 라벨
         peopleLabel.snp.makeConstraints { make in
             make.top.equalTo(datePicker.snp.bottom).offset(70)
-            make.leading.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().offset(30)
             make.trailing.lessThanOrEqualToSuperview().offset(-20)
         }
         
@@ -171,7 +171,7 @@ class PaymentViewController: UIViewController {
         // 총 금액 라벨
         totalPriceLabel.snp.makeConstraints { make in
             make.top.equalTo(peopleLabel.snp.bottom).offset(70)
-            make.leading.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().offset(30)
             make.trailing.lessThanOrEqualToSuperview().offset(-20)
         }
         
@@ -190,7 +190,7 @@ class PaymentViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm" // 날짜와 시간 형식 추가
         bookingDate = formatter.string(from: datePicker.date)
-        dateLabel.text = "날짜: \(bookingDate ?? "")"
+        dateLabel.text = "날짜:"
     }
     
     // 인원수 옆에 +랑 - 버튼을 눌렀을 때 숫자가 그에 맞게 변하게
@@ -263,8 +263,3 @@ class PaymentViewController: UIViewController {
         totalPriceLabel.text = "총 금액: \(totalPrice)원"
     }
 }
-@available(iOS 17.0, *)
-#Preview {
-    PaymentViewController()
-}
-
