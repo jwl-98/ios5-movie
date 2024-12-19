@@ -191,9 +191,27 @@ class PaymentViewController: UIViewController {
     @objc private func payButtonTapped() {
         let alert = UIAlertController(title: "결제 확인", message: "결제를 하시겠습니까?", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "네", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            
+            // 예매 정보 저장
+            let movieTitle = self.movieNameValueLabel.text ?? ""
+            let date = self.bookingDate ?? ""
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            let time = formatter.string(from: self.datePicker.date)
+            
+            UserDefaultsManager.shared.saveBookingInfo(
+                movieTitle: movieTitle,
+                bookingDate: date,
+                bookingTime: time,
+                peopleCount: self.peopleCount
+            )
+            
             self.resetValues()
-            let successAlert = UIAlertController(title: "결제 완료", message: "결제가 완료되었습니다!", preferredStyle: .alert)
+            let successAlert = UIAlertController(title: "결제 완료",
+                                               message: "결제가 완료되었습니다!",
+                                               preferredStyle: .alert)
             successAlert.addAction(UIAlertAction(title: "확인", style: .default))
             self.present(successAlert, animated: true)
         }))

@@ -24,8 +24,6 @@ class UserDefaultsManager {
         static let bookingDate = "bookingDate"
         static let bookingTime = "bookingTime"
         static let peopleCount = "peopleCount"
-        
-    }
     }
     
     // 로그인 상태 저장
@@ -49,14 +47,17 @@ class UserDefaultsManager {
     // 로그아웃
     func logout() {
         isLoggedIn = false
-        defaults.removeObject(forKey: Keys.userEmail)
-        defaults.removeObject(forKey: Keys.userPassword)
+//        // 회원정보 삭제
+//        defaults.removeObject(forKey: Keys.userEmail)
+//        defaults.removeObject(forKey: Keys.userPassword)
 //        // 예매 정보 삭제
 //        defaults.removeObject(forKey: Keys.movieTitle)
 //        defaults.removeObject(forKey: Keys.bookingDate)
 //        defaults.removeObject(forKey: Keys.bookingTime)
 //        defaults.removeObject(forKey: Keys.peopleCount)
     }
+    
+    // 예매 정보 저장
     func saveBookingInfo(movieTitle: String, bookingDate: String, bookingTime: String, peopleCount: Int) {
         defaults.set(movieTitle, forKey: Keys.movieTitle)
         defaults.set(bookingDate, forKey: Keys.bookingDate)

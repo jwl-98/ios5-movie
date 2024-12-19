@@ -172,7 +172,7 @@ class LoginView: UIViewController {
             userDefaults.saveUserCredentials(email: email, password: password, name: savedName ?? "")
             
             // 로그인 성공 시 메인 화면으로 이동
-            let mainVC = UserPageView()
+            let mainVC = MovieListViewController()
             navigationController?.setViewControllers([mainVC], animated: true)
         } else {
             let alert = UIAlertController(title: "로그인 실패",

@@ -61,6 +61,26 @@ class UserPageView: UIViewController {
         return button
     }()
     
+    private let movieTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        return label
+    }()
+
+    private let bookingDateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .gray
+        return label
+    }()
+
+    private let peopleCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .gray
+        return label
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +113,34 @@ class UserPageView: UIViewController {
         
         setupConstraints()
         setupActions()
+        
+        // 예매 정보 표시
+        let bookingInfo = userDefaults.getBookingInfo()
+        if let title = bookingInfo.title {
+            movieTitleLabel.text = "영화: \(title)"
+            bookingDateLabel.text = "날짜: \(bookingInfo.date ?? "") \(bookingInfo.time ?? "")"
+            peopleCountLabel.text = "인원: \(bookingInfo.count ?? 0)명"
+            
+            // 티켓 뷰에 레이블 추가
+            ticketView.addSubview(movieTitleLabel)
+            ticketView.addSubview(bookingDateLabel)
+            ticketView.addSubview(peopleCountLabel)
+            
+            // 티켓 뷰 내부 레이블 제약조건
+            movieTitleLabel.snp.makeConstraints { make in
+                make.top.leading.equalToSuperview().offset(15)
+            }
+            
+            bookingDateLabel.snp.makeConstraints { make in
+                make.top.equalTo(movieTitleLabel.snp.bottom).offset(10)
+                make.leading.equalTo(movieTitleLabel)
+            }
+            
+            peopleCountLabel.snp.makeConstraints { make in
+                make.top.equalTo(bookingDateLabel.snp.bottom).offset(10)
+                make.leading.equalTo(movieTitleLabel)
+            }
+        }
     }
     
     private func setupConstraints() {
