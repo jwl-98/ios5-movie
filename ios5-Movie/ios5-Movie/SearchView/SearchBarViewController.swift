@@ -9,11 +9,22 @@ import UIKit
 import SnapKit
 
 class SearchBarViewController: UIViewController, UISearchBarDelegate {
-
+    
+    //서치 컨트롤러 기본 설정
+    private lazy var searchController: UISearchController = {
+        //검색화면을 담당하는 VC
+        let searchController = UISearchController(searchResultsController: SearchListViewController())
+        searchController.searchBar.placeholder = "영화 이름 검색"
+        
+        return searchController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupSearchController()
+        //네비게이션 바 위치 조정
+        navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -10)
     }
     
     //네비게이션 바 설정
@@ -24,14 +35,6 @@ class SearchBarViewController: UIViewController, UISearchBarDelegate {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
     }
-    
-    //서치 컨트롤러 기본 설정
-    private lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: SearchListViewController())
-        searchController.searchBar.placeholder = "영화 이름 검색"
-        
-        return searchController
-    }()
     
     //서치바 델리게이트 설정
     private func setupSearchController() {
@@ -50,15 +53,4 @@ extension SearchBarViewController {
                 }
         print("\(searchText)")
     }
-    //서치바내 취소버튼 눌리면 실행되는 동작
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("취소버튼 눌림")
-    }
 }
-
-//@available(iOS 17.0, *)
-//#Preview {
-//    let searchVC = SearchViewController()
-//    let navigationController = UINavigationController(rootViewController: searchVC)
-//    return navigationController
-//}
