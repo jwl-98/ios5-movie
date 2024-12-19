@@ -51,7 +51,7 @@ class MovieCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         // 이미지가 바뀌는 것처럼 보이는 현상을 없애기 위함
-        self.imageView.image = nil
+        self.imageView.image = UIImage(named: "Loading")
     }
     
     override init(frame: CGRect) {
