@@ -10,6 +10,10 @@ import Alamofire
 //
 
 class SearchModel {
+    
+    // 네트워크 매니저
+    private let networkManager = NetworkManager.shared
+    
     //api통신후 데이터를 담기위한 배열
     private var movieResultArray: [Movie] = []
     
@@ -25,7 +29,8 @@ class SearchModel {
      }
     
     func searchMovies(with query: String, completion: @escaping ([Movie]) -> Void) {
-        NetworkManager.shared.fetchSearchData(searchTerm: query) { (result: Result<MovieData, AFError>) in
+        networkManager.fetchSearchData(searchTerm: query) { [weak self] (result: Result<MovieData, AFError>) in
+            guard let self = self else { return }
             switch result {
             case .success(let movieData):
                 self.movieResultArray = movieData.results
