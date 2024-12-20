@@ -81,49 +81,49 @@ gitGraph
     checkout develop
     commit id: "dev: 프로젝트 초기 설정"
     
-    branch feature/login
-    checkout feature/login
+    branch loginView/Ryu
+    checkout  loginView/Ryu
     commit id: "feat: 로그인 UI 구현"
     commit id: "feat: 로그인 기능 구현"
     checkout develop
-    merge feature/login
+    merge loginView/Ryu
     
-    branch feature/main
-    checkout feature/main
+    branch mainView/Kim
+    checkout mainView/Kim
     commit id: "feat: 메인화면 UI 구현"
     commit id: "feat: 영화 목록 구현"
     checkout develop
-    merge feature/main
-    
-    branch feature/payment
-    checkout feature/payment
-    commit id: "feat: 결제화면 UI 구현"
-    commit id: "feat: 결제 기능 구현"
-    checkout develop
-    merge feature/payment
-    
-    branch feature/search
-    checkout feature/search
+    merge mainView/Kim
+
+    branch searchView/Lee
+    checkout searchView/Lee
     commit id: "feat: 검색화면 UI 구현"
     commit id: "feat: 검색 기능 구현"
     checkout develop
-    merge feature/search
-    
-    branch feature/detail
-    checkout feature/detail
+    merge searchView/Lee
+
+    branch detailView/Na
+    checkout detailView/Na
     commit id: "feat: 상세화면 UI 구현"
     commit id: "feat: 상세 기능 구현"
     checkout develop
-    merge feature/detail
+    merge detailView/Na
+
+    branch paymentView/Choi
+    checkout paymentView/Choi
+    commit id: "feat: 결제화면 UI 구현"
+    commit id: "feat: 결제 기능 구현"
+    checkout develop
+    merge paymentView/Choi
     
     checkout main
-    merge develop tag: "v1.0.0"
+    merge develop
 ```
 
 ## 📋 브랜치 전략
 - `main`: 제품 출시 브랜치
 - `develop`: 개발 브랜치
-- `feature/*`: 기능 개발 브랜치
+- `*View/*`: 기능 개발 브랜치
 
 ## 💻 Commit Convention
 
