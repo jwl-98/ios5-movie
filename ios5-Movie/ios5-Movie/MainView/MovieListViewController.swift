@@ -64,7 +64,13 @@ class MovieListViewController: UIViewController {
     // MARK: - Setup UI
     
     private func setupNaviBar() {
-        title = "6GV🍿"
+        
+        // 네비게이션 바 로고 설정
+        let logoImageView = UIImageView(image: UIImage(named: "Logo"))
+        logoImageView.contentMode = .scaleAspectFit
+        self.navigationItem.titleView = logoImageView
+        
+        // 네비바 설정
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()  // 불투명으로
         appearance.backgroundColor = .white
@@ -174,6 +180,7 @@ class MovieListViewController: UIViewController {
     // MARK: - 세그먼트 선택 시 화면전환
     
     @objc private func segmentedControlChanged(_ sender: UISegmentedControl) {
+        
         /// 기존 뷰 제거
         containerView.subviews.forEach { $0.removeFromSuperview() }
         
@@ -181,18 +188,19 @@ class MovieListViewController: UIViewController {
         let selectedView: UIView
         
         switch sender.selectedSegmentIndex {
-        /// 컬렉션뷰
+            
+            /// 컬렉션뷰
         case 0:
             selectedView = collectionView
             
-        /// 영화검색 페이지
+            /// 영화검색 페이지
         case 1:
             let searchListVC = SearchListViewController()
             addChild(searchListVC)
             selectedView = searchListVC.view
             searchListVC.didMove(toParent: self)
             
-        /// 마이페이지
+            /// 마이페이지
         case 2:
             let userVC = UserPageView()
             addChild(userVC)
@@ -205,7 +213,7 @@ class MovieListViewController: UIViewController {
         
         addSubviewToContainer(selectedView)
     }
-
+    
     /// 세그먼트 선택 뷰 추가, 오토레이아웃
     private func addSubviewToContainer(_ view: UIView) {
         containerView.addSubview(view)
