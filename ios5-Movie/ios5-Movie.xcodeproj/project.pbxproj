@@ -153,6 +153,7 @@
 /* Begin XCBuildConfiguration section */
 		E2738DB22D0BFFFB00615AF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -217,6 +218,8 @@
 		};
 		E2738DB42D0BFFFB00615AF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E2738DA02D0BFFFA00615AF2 /* ios5-Movie */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
