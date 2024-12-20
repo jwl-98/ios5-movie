@@ -133,7 +133,6 @@ type: subject
 
 body
 
-footer
 ```
 
 ### 2. Commit Type
@@ -151,34 +150,21 @@ footer
 ### 3. Subject (제목)
 - 최대 50글자
 - 마침표 및 특수기호 사용 X
-- 영문 사용 시 첫 글자 대문자로 시작
 - 과거 시제 사용 X
 - 개조식 구문으로 작성
 
-예) `Add` (O) / `Added` (X)
 
 ### 4. Body (본문)
 - 한 줄당 72자 이내
 - 상세한 설명 (무엇을, 왜 변경했는지)
 
-### 5. Footer (꼬리말)
-이슈 트래커 ID 작성
-- `Fixes`: 이슈 수정중
-- `Resolves`: 이슈 해결
-- `Ref`: 참고 이슈
-- `Related to`: 관련 이슈
-
-예) `Fixes: #45 Related to: #34, #23`
 
 ### 6. 커밋 예시
 ```
-Feat: "회원 가입 기능 구현"
+feat: 회원 가입 기능 구현
 
 SMS, 이메일 중복확인 API 개발
 
-Resolves: #123
-Ref: #456
-Related to: #48, #45
 ```
 
 ---
