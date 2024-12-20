@@ -54,6 +54,10 @@
 ### 활용 API
 - The Movie Database(TMDB) API
 
+### 📝 Technologies & Tools
+
+<p> <!-- Swift --> <img src="https://img.shields.io/badge/Swift-F05138?style=flat-square&logo=Swift&logoColor=white"/> <!-- UIKit --> <img src="https://img.shields.io/badge/UIKit-2396F3?style=flat-square&logo=apple&logoColor=white"/> <!-- UserDefaults --> <img src="https://img.shields.io/badge/UserDefaults-808080?style=flat-square&logo=apple&logoColor=white"/> <!-- Alamofire --> <img src="https://img.shields.io/badge/Alamofire-FF6C37?style=flat-square&logo=swift&logoColor=white"/> <!-- GitHub --> <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/> </p>
+
 ---
 
 ## 📱 주요 기능
