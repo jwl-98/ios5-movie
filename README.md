@@ -1,14 +1,76 @@
-# 🎬 영화 예매 앱 프로젝트
+# 🎬 영화 예매 앱 프로젝트 6GV
+
+> 6GV는 영화상영정보안내 및 예매 모바일 앱 입니다.
+---
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/476c2312-2110-4db6-b868-821d209d67c1" alt="6GV" width="800">
+</p>
 
 ## 📌 프로젝트 소개
-영화 예매 모바일 앱 프로젝트입니다.
+
+회원가입 후 로그인하여 영화상영 정보를 알 수 있고 </p>
+예매 할 수 있는 모바일 앱 프로젝트입니다.
+
+### 대상 사용자
+
+- 😎 영화를 손쉽게 예매하고 싶은 사람
+- 🍿 영화 상영 정보가 궁금한 사람
+
+---
+
+
+
 
 ## 👥 팀 구성
-- **Ryu**: 로그인/회원가입
-- **Kim**: 메인 화면
-- **Lee**: 결제 시스템
-- **Choi**: 검색 기능
-- **Na**: 상세 페이지
+| Name      | 역할       | GitHub                           |
+| -------- | -------- | --------------------------------- |
+| Ryu  | 로그인/회원가입 | [@taeryu7](https://github.com/taeryu7) |
+| Kim  | 메인화면 | [@nemo-semo](https://github.com/nemo-semo) |
+| Lee | 검색기능 | [@jwl-98](https://github.com/jwl-98) |
+| Choi | 예매화면 | [@Choi-jun08](https://github.com/Choi-jun08) |
+| Na  | 상세화면, API연결 | [@bryjna07](https://github.com/bryjna07) |
+
+---
+
+## ⏰ 프로젝트 일정
+
+- **시작일**: 24/12/13  
+- **종료일**: 24/12/20
+
+---
+
+## 🛠️ 기술 스택
+
+### UI Frameworks
+- UIKit
+- AutoLayout
+
+### 데이터 처리
+- UserDefaults
+
+### API 통신
+- Alamofire
+
+### 활용 API
+- The Movie Database(TMDB) API
+
+---
+
+## 📱 주요 기능
+
+1. **영화정보 안내**
+
+   현재 상영중, 개봉예정, 인기있는 영화의 목록 및 영화정보가 제공됩니다. 
+
+2. **로그인/회원정보 및 마이페이지**
+
+   회원가입 기능을 통해 사용자 본인의 정보 및 예매내역을 확인할 수 있습니다.
+
+3. **영화 검색**
+
+   사용자가 찾고싶은 영화를 검색할 수 있습니다.
+
+---
 
 ## 🌿 Git Flow
 ```mermaid
@@ -119,20 +181,10 @@ Ref: #456
 Related to: #48, #45
 ```
 
-## 🚀 시작하기
+---
 
-### 저장소 클론
-```bash
-git clone [repository URL]
-cd [repository name]
-```
+## 📦 설치 및 실행 방법
 
-### 브랜치 생성
-```bash
-git checkout -b feature/[기능명]
-```
-
-### 개발 완료 후 머지 요청
-1. 개발 브랜치에서 작업 완료
-2. develop 브랜치로 Pull Request 생성
-3. 코드 리뷰 후 승인되면 머지
+ 이 저장소를 클론합니다:
+   ```bash
+   git clone https://github.com/jwl-98/ios5-movie.git
