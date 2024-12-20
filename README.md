@@ -11,6 +11,8 @@
 회원가입 후 로그인하여 영화상영 정보를 알 수 있고 </p>
 예매 할 수 있는 모바일 앱 프로젝트입니다.
 
+- [6GV 프로젝트 대시보드](https://www.notion.so/teamsparta/b4e2e05664d247489c579dbc894d6589)
+
 ### 대상 사용자
 
 - 😎 영화를 손쉽게 예매하고 싶은 사람
@@ -56,7 +58,7 @@
 
 ### 📝 Technologies & Tools
 
-<p> <!-- Swift --> <img src="https://img.shields.io/badge/Swift-F05138?style=flat-square&logo=Swift&logoColor=white"/> <!-- UIKit --> <img src="https://img.shields.io/badge/UIKit-2396F3?style=flat-square&logo=apple&logoColor=white"/> <!-- UserDefaults --> <img src="https://img.shields.io/badge/UserDefaults-808080?style=flat-square&logo=apple&logoColor=white"/> <!-- Alamofire --> <img src="https://img.shields.io/badge/Alamofire-FF6C37?style=flat-square&logo=swift&logoColor=white"/> <!-- GitHub --> <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/> </p>
+<p> <!-- Swift --> <img src="https://img.shields.io/badge/Swift-F05138?style=flat-square&logo=Swift&logoColor=white"/> <!-- UIKit --> <img src="https://img.shields.io/badge/UIKit-2396F3?style=flat-square&logo=apple&logoColor=white"/> <!-- UserDefaults --> <img src="https://img.shields.io/badge/UserDefaults-808080?style=flat-square&logo=apple&logoColor=white"/> <!-- Alamofire --> <img src="https://img.shields.io/badge/Alamofire-FF6C37?style=flat-square&logo=swift&logoColor=white"/> <!-- GitHub --> <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/> <!-- Figma --> <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/> <!-- Notion --> <img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white"/> <!-- Slack --> <img src="https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white"/> </p>
 
 ---
 
