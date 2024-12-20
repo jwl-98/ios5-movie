@@ -74,6 +74,7 @@ class MovieListViewController: UIViewController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()  // 불투명으로
         appearance.backgroundColor = .white
+        appearance.shadowColor = nil
         navigationController?.navigationBar.tintColor = .systemBlue
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
@@ -93,8 +94,9 @@ class MovieListViewController: UIViewController {
         containerView.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
+    
             // SegmentedControl Layout
-            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             segmentedControl.heightAnchor.constraint(equalToConstant: 40),
