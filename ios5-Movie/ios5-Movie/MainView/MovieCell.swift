@@ -80,14 +80,14 @@ class MovieCell: UICollectionViewCell {
         
         guard let urlString = self.imageURL, let url = URL(string: urlString) else { return }
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [weak self] in
             guard let data = try? Data(contentsOf: url) else { return }
             
             // url 비교
             guard urlString == url.absoluteString else { return }
             
             DispatchQueue.main.async {
-                self.imageView.image = UIImage(data: data)
+                self?.imageView.image = UIImage(data: data)
             }
         }
     }

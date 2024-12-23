@@ -71,14 +71,14 @@ class MovieSearchCell: UICollectionViewCell {
         
         guard let urlString = self.imageURL, let url = URL(string: urlString) else { return }
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [weak self] in
             guard let data = try? Data(contentsOf: url) else { return }
             
             // url이 바뀔 가능성 제거
             guard urlString == url.absoluteString else { return }
             
             DispatchQueue.main.async {
-                self.posterImageView.image = UIImage(data: data)
+                self?.posterImageView.image = UIImage(data: data)
             }
         }
     }
